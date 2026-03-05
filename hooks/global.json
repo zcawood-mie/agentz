@@ -1,0 +1,38 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "type": "command",
+        "command": "~/.agents/hooks/scripts/block-hooks-edit.sh",
+        "timeout": 5
+      },
+      {
+        "type": "command",
+        "command": "~/.agents/hooks/scripts/block-force-push.sh",
+        "timeout": 5
+      },
+      {
+        "type": "command",
+        "command": "~/.agents/hooks/scripts/scan-before-push.sh",
+        "timeout": 15
+      },
+      {
+        "type": "command",
+        "command": "~/.agents/hooks/scripts/sandbox-git.sh",
+        "timeout": 5
+      },
+      {
+        "type": "command",
+        "command": "~/.agents/hooks/scripts/auto-approve-simple.sh",
+        "timeout": 5
+      }
+    ],
+    "PostToolUse": [
+      {
+        "type": "command",
+        "command": "~/.agents/hooks/scripts/auto-format.sh",
+        "timeout": 30
+      }
+    ]
+  }
+}
