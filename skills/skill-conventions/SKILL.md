@@ -140,3 +140,47 @@ Add an `## Available Scripts` section at the end of the SKILL.md with:
 - Usage examples (copy-pasteable commands)
 - Exit codes and their meanings
 - Key output fields (for JSON output)
+
+---
+
+## Cached User Context
+
+Some skills need user-specific inputs (GitHub username, team workflow, org name, etc.) that don't change between invocations. Rather than asking every time or requiring upfront configuration, skills should **ask once and remember**.
+
+### The Pattern
+
+1. **Check** the memory files named in the skill for previously cached answers
+2. **If found** — use cached values as defaults and proceed without asking
+3. **If not found** — ask the user, then **save answers** to the named memory file
+4. **Conversation overrides** always win — if the user provides a value in the current conversation, use it (and optionally update the cache)
+
+### Naming Memory Files
+
+Name memory files by **topic**, not by skill. Multiple skills can reference the same memory file when they share context. Every memory file a skill reads or writes must be **explicitly named in that skill** — agents should never invent new memory file names at runtime.
+
+Examples:
+- `/memories/github-identity.md` — username, org, team workflow (referenced by `pr-dashboard`, `pr-workflow`, etc.)
+- `/memories/pr-dashboard.md` — dashboard-specific preferences referenced only by that skill
+
+Memory files are known configuration files with defined contents. A skill may reference several, and a memory file may be referenced by several skills.
+
+### Adding to a Skill
+
+List the memory files the skill uses and what it expects to find in each. Add a brief section before any user-question phase:
+
+```markdown
+**Cached context:** Before asking, check `/memories/<topic>.md` for previously saved
+answers. If found, use them and proceed — only re-ask if something looks stale or the user
+requests changes. If not found, ask the questions below, then save the answers to
+`/memories/<topic>.md` for future runs.
+```
+
+### Rules
+
+- Every memory file a skill uses must be **named explicitly in that skill** — agents must not create ad-hoc memory files
+- Use the `memory-access` skill's helper scripts (`read-memory.sh`, `write-memory.sh`) for all reads and writes
+- Name memory files by topic — shared context lives in a single file, not duplicated per skill
+- Only cache **stable inputs** — things that rarely change (username, org, team workflow). Don't cache volatile state (current PR list, branch names)
+- Keep the format simple — key: value pairs or short bullet points
+- Never cache secrets or tokens
+- The user can always override cached values in conversation
