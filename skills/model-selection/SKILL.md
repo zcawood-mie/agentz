@@ -9,7 +9,7 @@ description: 'AI model selection and optimization for agents. Use for: model com
 - Comparing model capabilities for a specific task type
 - Optimizing for speed, quality, or rate limit headroom
 
-## Model Tiers (as of Feb 2026)
+## Model Tiers (as of Mar 2026)
 
 ### Included Models (0x multiplier on paid plans)
 | Model | Strengths |
@@ -31,9 +31,9 @@ description: 'AI model selection and optimization for agents. Use for: model com
 |---|---|
 | Claude Sonnet 4 | Reliable completions, smart reasoning under pressure |
 | Claude Sonnet 4.5 | Multi-file refactoring, hybrid reasoning, agent tasks, architectural planning |
-| Claude Sonnet 4.6 | Latest Sonnet, may change multiplier |
-| GPT-5.1 / GPT-5.2 | Complex reasoning, code analysis, technical decisions |
-| GPT-5.1-Codex / GPT-5.2-Codex | Agentic software development |
+| Claude Sonnet 4.6 | Latest Sonnet — improved quality over 4.5, multiplier may change |
+| GPT-5.1 / GPT-5.2 / GPT-5.4 | Complex reasoning, code analysis, technical decisions |
+| GPT-5.1-Codex / GPT-5.2-Codex / GPT-5.3-Codex | Agentic software development |
 | Gemini 2.5 Pro / Gemini 3 Pro / Gemini 3.1 Pro | Advanced reasoning, long contexts, scientific analysis |
 
 ### Premium Models (3x+ multiplier)
@@ -53,11 +53,11 @@ description: 'AI model selection and optimization for agents. Use for: model com
 
 ### Deep Reasoning & Debugging
 Best for: multi-file debugging, large refactors, architecture planning, trade-off analysis, log/perf analysis.
-**Recommended:** Claude Opus 4.6, GPT-5.2, Claude Sonnet 4, Gemini 3 Pro
+**Recommended:** Claude Opus 4.6, GPT-5.4, GPT-5.2, Claude Sonnet 4.6, Gemini 3 Pro
 
 ### General-Purpose Coding & Agent Tasks
 Best for: writing/reviewing functions, code diffs, documentation, error explanation.
-**Recommended:** Claude Sonnet 4.5, GPT-5.1-Codex, GPT-5 mini, Grok Code Fast 1
+**Recommended:** Claude Sonnet 4.6, GPT-5.1-Codex, GPT-5 mini, Grok Code Fast 1
 
 ### Fast/Simple/Repetitive Tasks
 Best for: small functions, syntax questions, prototyping, quick feedback.
@@ -65,11 +65,11 @@ Best for: small functions, syntax questions, prototyping, quick feedback.
 
 ### Agentic Software Development
 Best for: multi-step autonomous coding sessions, tool calling, agent mode.
-**Recommended:** Claude Sonnet 4.5, GPT-5.2-Codex, GPT-5.1-Codex-Max
+**Recommended:** Claude Sonnet 4.6, GPT-5.2-Codex, GPT-5.3-Codex, GPT-5.1-Codex-Max
 
 ### Visual/Multimodal Tasks
 Best for: screenshots, diagrams, UI components.
-**Recommended:** GPT-5 mini, Claude Sonnet 4, Gemini 3 Pro
+**Recommended:** GPT-5 mini, Claude Sonnet 4.6, Gemini 3 Pro
 
 ## Agent Model Assignment Strategy
 
@@ -79,11 +79,11 @@ Match model to the **complexity ceiling** of each agent's typical task. Be vendo
 
 | Agent | Model | Multiplier | Rationale |
 |---|---|---|---|
-| Implementation | `['Claude Opus 4.6', 'GPT-5.2-Codex']` | 3x → 1x fallback | Orchestrator — plans, dispatches, verifies |
-| Research | `Claude Sonnet 4.5` | 1x | Orchestrator — decomposes, dispatches, synthesizes |
-| SourceWriter | `['Claude Opus 4.6', 'GPT-5.2-Codex']` | 3x → 1x fallback | Code quality (production + tests) — same reasoning as Implementation |
-| CodeScanner | `Claude Sonnet 4.5` | 1x | Critical analysis, pattern recognition |
-| CodeExplorer | `Claude Sonnet 4.5` | 1x | Investigative reasoning, same as Research |
+| Implementation | `['Claude Opus 4.6', 'GPT-5.4', 'GPT-5.2-Codex']` | 3x → 1x → 1x fallback | Orchestrator — plans, dispatches, verifies |
+| Research | `Claude Sonnet 4.6` | 1x | Orchestrator — decomposes, dispatches, synthesizes |
+| SourceWriter | `['Claude Opus 4.6', 'GPT-5.4', 'GPT-5.2-Codex']` | 3x → 1x → 1x fallback | Code quality (production + tests) — same reasoning as Implementation |
+| CodeScanner | `Claude Sonnet 4.6` | 1x | Critical analysis, pattern recognition |
+| CodeExplorer | `Claude Sonnet 4.6` | 1x | Investigative reasoning, same as Research |
 | DocFetcher | `GPT-5 mini` | 0x | Structured context7 tool calls — mechanical |
 | WebSearcher | `GPT-5 mini` | 0x | Structured web fetch tool calls — lightweight summarization |
 | BrowserTest | `GPT-5 mini` | 0x | DOM clicks, screenshots — mechanical |
@@ -98,18 +98,21 @@ Prompts can set `model:` to override their agent's default for specific tasks:
 |---|---|---|---|
 | `commitCurrentChanges` | `GPT-5 mini` | 0x | git add + commit message — trivial |
 | `resetProject` | `GPT-5 mini` | 0x | git checkout + pull — trivial |
-| `cleanupBranch` | `Claude Sonnet 4.5` | 1x | Diff review needs judgment, not deep reasoning |
-| `testCurrentBranch` | `Claude Sonnet 4.5` | 1x | Test execution needs some judgment |
+| `cleanupBranch` | `Claude Sonnet 4.6` | 1x | Diff review needs judgment, not deep reasoning |
+| `testCurrentBranch` | `Claude Sonnet 4.6` | 1x | Test execution needs some judgment |
+| `reviewMyBranch` | `Claude Sonnet 4.6` | 1x | Self-review needs judgment |
+| `reviewPR` | `Claude Sonnet 4.6` | 1x | Code review needs judgment |
+| `scanBranch` | `Claude Sonnet 4.6` | 1x | Scan analysis needs pattern recognition |
 | `implementTicketAuto` | (inherits Opus 4.6) | 3x | Full feature implementation — needs deep reasoning |
 | `implementTicketManual` | (inherits Opus 4.6) | 3x | Full feature implementation — needs deep reasoning |
 | `fixPRFeedback` | (inherits Opus 4.6) | 3x | Addressing review comments — needs deep reasoning |
-| `tuneModels` | (inherits Sonnet 4.5) | 1x | Model comparison — Research agent task |
+| `tuneModels` | (inherits Sonnet 4.6) | 1x | Model comparison — Research agent task |
 
 ### Assignment Principles
 
 1. **Subagents that call MCP tools → 0x models (GPT-5 mini)**. These are structured tool calls, not reasoning tasks.
 2. **Mechanical prompts → 0x models**. Committing, resetting, staging — no reasoning needed.
-3. **Judgment prompts → 1x models (Sonnet 4.5)**. Diff review, test planning — needs pattern matching.
+3. **Judgment prompts → 1x models (Sonnet 4.6)**. Diff review, test planning — needs pattern matching.
 4. **Implementation prompts → premium model**. Feature work, debugging, refactoring — needs deep reasoning.
 5. **Use ordered fallback lists** for critical agents so rate limits don't block work.
 
@@ -118,7 +121,7 @@ Prompts can set `model:` to override their agent's default for specific tasks:
 Set in YAML frontmatter:
 ```yaml
 model: 'Claude Opus 4.6'           # Single model
-model: ['Claude Sonnet 4.5', 'Claude Opus 4.6']  # Ordered fallback
+model: ['Claude Sonnet 4.6', 'Claude Opus 4.6']  # Ordered fallback
 ```
 
 If omitted, the model picker selection is used.

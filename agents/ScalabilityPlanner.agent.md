@@ -2,7 +2,7 @@
 name: ScalabilityPlanner
 description: 'Scalability-focused feature planner. Use for: data growth, query patterns, caching, load handling, database design, scalability planning.'
 argument-hint: Provide a feature description or problem to plan with scalability as the primary lens.
-model: 'Claude Sonnet 4.5'
+model: 'Claude Sonnet 4.6'
 tools: ['read', 'search', 'search/searchSubagent']
 user-invokable: false
 ---

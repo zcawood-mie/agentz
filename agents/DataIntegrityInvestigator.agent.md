@@ -2,7 +2,7 @@
 name: DataIntegrityInvestigator
 description: 'Data-focused bug investigator. Use for: corrupt data, wrong values, missing records, data drift, schema mismatch, upstream data issues, debugging.'
 argument-hint: Provide bug symptoms and relevant context to investigate from a data integrity perspective.
-model: 'Claude Sonnet 4.5'
+model: 'Claude Sonnet 4.6'
 tools: ['read', 'search', 'search/searchSubagent']
 user-invokable: false
 ---

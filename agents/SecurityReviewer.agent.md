@@ -2,7 +2,7 @@
 name: SecurityReviewer
 description: 'Security-focused code reviewer. Use for: auth gaps, injection, data exposure, XSS, CSRF, secrets, permissions, security review.'
 argument-hint: Provide a diff or file paths to review for security concerns.
-model: 'Claude Sonnet 4.5'
+model: 'Claude Sonnet 4.6'
 tools: ['read', 'search', 'search/searchSubagent']
 user-invokable: false
 ---

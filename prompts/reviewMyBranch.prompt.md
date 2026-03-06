@@ -3,7 +3,7 @@ name: reviewMyBranch
 description: Self-review your current branch changes
 argument-hint: Optionally provide additional review focus or context
 agent: Research
-model: 'Claude Sonnet 4.5'
+model: 'Claude Sonnet 4.6'
 ---
 Self-review the changes on the current branch using the self-review priority list.
 

@@ -2,7 +2,7 @@
 name: CodeExplorer
 description: 'Investigate a specific codebase question by tracing patterns and data flow. Use for: pattern search, data flow tracing, code investigation, find examples, registration points, dependency mapping.'
 argument-hint: Provide a specific question about the codebase to investigate.
-model: 'Claude Sonnet 4.5'
+model: 'Claude Sonnet 4.6'
 tools: ['read', 'search', 'search/searchSubagent']
 user-invokable: false
 ---

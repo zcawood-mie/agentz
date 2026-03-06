@@ -2,7 +2,7 @@
 name: SecurityPlanner
 description: 'Security-focused feature planner. Use for: threat modeling, auth design, data protection, attack surface, secure-by-default, security planning.'
 argument-hint: Provide a feature description or problem to plan with security as the primary lens.
-model: 'Claude Sonnet 4.5'
+model: 'Claude Sonnet 4.6'
 tools: ['read', 'search', 'search/searchSubagent']
 user-invokable: false
 ---

@@ -2,7 +2,7 @@
 name: Implementation
 description: 'Read-write agent that implements, tests, and debugs. Use for: implement, code, build, test, debug, fix, execute plan, commit, push.'
 argument-hint: Provide a plan to implement, or describe what to build/fix/test.
-model: ['Claude Opus 4.6', 'GPT-5.2-Codex']
+model: ['Claude Opus 4.6', 'GPT-5.4', 'GPT-5.2-Codex']
 tools: ['vscode/askQuestions', 'vscode.mermaid-chat-features/renderMermaidDiagram', 'todo', 'read', 'search', 'search/searchSubagent', 'edit', 'execute/runInTerminal', 'execute/awaitTerminal', 'execute/killTerminal', 'agent']
 agents: ['Research', 'GitHubOps', 'BrowserTest', 'DatabaseOps', 'SourceWriter', 'CodeScanner', 'CodeExplorer', 'DocFetcher', 'WebSearcher']
 disable-model-invocation: true

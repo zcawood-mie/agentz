@@ -2,7 +2,7 @@
 name: ControlFlowInvestigator
 description: 'Logic-focused bug investigator. Use for: wrong branch, missing condition, off-by-one, logic error, state machine, code path, debugging.'
 argument-hint: Provide bug symptoms and relevant context to investigate from a control flow perspective.
-model: 'Claude Sonnet 4.5'
+model: 'Claude Sonnet 4.6'
 tools: ['read', 'search', 'search/searchSubagent']
 user-invokable: false
 ---

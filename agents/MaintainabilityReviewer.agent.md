@@ -2,7 +2,7 @@
 name: MaintainabilityReviewer
 description: 'Maintainability-focused code reviewer. Use for: naming, readability, dead code, AI-readability, searchability, source of truth, maintainability review.'
 argument-hint: Provide a diff or file paths to review for maintainability concerns.
-model: 'Claude Sonnet 4.5'
+model: 'Claude Sonnet 4.6'
 tools: ['read', 'search', 'search/searchSubagent']
 user-invokable: false
 ---

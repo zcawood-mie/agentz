@@ -3,7 +3,7 @@ name: testCurrentBranch
 description: Manually test the changes on the current branch
 argument-hint: Optionally describe specific areas to focus testing on
 agent: Implementation
-model: 'Claude Sonnet 4.5'
+model: 'Claude Sonnet 4.6'
 ---
 Manually test the changes on the current branch.
 

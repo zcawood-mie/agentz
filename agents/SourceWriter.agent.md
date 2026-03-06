@@ -2,7 +2,7 @@
 name: SourceWriter
 description: 'Write code within scoped boundaries. Use for: source code, tests, schema, service, route, helper, component, template, test files, implementation.'
 argument-hint: Provide the task, file scope, priorities, and context needed to write code.
-model: ['Claude Opus 4.6', 'GPT-5.2-Codex']
+model: ['Claude Opus 4.6', 'GPT-5.4', 'GPT-5.2-Codex']
 tools: ['read', 'search', 'search/searchSubagent', 'edit', 'execute/runInTerminal', 'execute/awaitTerminal']
 user-invokable: false
 ---

@@ -2,7 +2,7 @@
 name: ConceptualistPlanner
 description: 'Philosophy-focused feature planner. Use for: conceptual modeling, domain alignment, semantic correctness, naming truth, conceptual integrity, planning.'
 argument-hint: Provide a feature description or problem to plan with conceptual integrity as the primary lens.
-model: 'Claude Sonnet 4.5'
+model: 'Claude Sonnet 4.6'
 tools: ['read', 'search', 'search/searchSubagent']
 user-invokable: false
 ---

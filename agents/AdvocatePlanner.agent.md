@@ -2,7 +2,7 @@
 name: AdvocatePlanner
 description: 'User-experience-focused feature planner. Use for: edge cases, failure modes, accessibility, error handling, user journey, UX planning.'
 argument-hint: Provide a feature description or problem to plan with user experience as the primary lens.
-model: 'Claude Sonnet 4.5'
+model: 'Claude Sonnet 4.6'
 tools: ['read', 'search', 'search/searchSubagent']
 user-invokable: false
 ---

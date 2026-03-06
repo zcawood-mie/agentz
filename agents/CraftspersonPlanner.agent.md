@@ -2,7 +2,7 @@
 name: CraftspersonPlanner
 description: 'Quality-focused feature planner. Use for: clean architecture, proper abstractions, extensibility, code quality, sustainable design, planning.'
 argument-hint: Provide a feature description or problem to plan a well-crafted implementation approach for.
-model: 'Claude Sonnet 4.5'
+model: 'Claude Sonnet 4.6'
 tools: ['read', 'search', 'search/searchSubagent']
 user-invokable: false
 ---

@@ -3,7 +3,7 @@ name: reviewPR
 description: Review a colleague's pull request
 argument-hint: Provide a PR URL to review
 agent: Research
-model: 'Claude Sonnet 4.5'
+model: 'Claude Sonnet 4.6'
 ---
 Review the given pull request using the colleague review priority list.
 

@@ -3,7 +3,7 @@ name: scanBranch
 description: Scan the current branch diff for dead code, security issues, and refactoring opportunities
 argument-hint: Optionally specify which scan types to run (dead-code, security, refactoring, diff-quality) or leave blank for all
 agent: Implementation
-model: 'Claude Sonnet 4.5'
+model: 'Claude Sonnet 4.6'
 ---
 Scan all changes on the current branch for quality issues.
 

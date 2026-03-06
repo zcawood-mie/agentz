@@ -2,7 +2,7 @@
 name: PragmatistPlanner
 description: 'Velocity-focused feature planner. Use for: ship fast, minimal changes, reuse patterns, pragmatic plan, incremental delivery, planning.'
 argument-hint: Provide a feature description or problem to plan a pragmatic implementation approach for.
-model: 'Claude Sonnet 4.5'
+model: 'Claude Sonnet 4.6'
 tools: ['read', 'search', 'search/searchSubagent']
 user-invokable: false
 ---

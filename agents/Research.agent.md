@@ -2,7 +2,7 @@
 name: Research
 description: 'Read-only codebase investigation, planning, and PR review. Use for: research, plan, design, architecture, investigate, explore, trace data flow, find patterns, diagram, PR review, code review.'
 argument-hint: Ask a question about the codebase, describe a feature to plan, or provide a PR to review.
-model: ['Claude Sonnet 4.5']
+model: ['Claude Sonnet 4.6']
 tools: [vscode/askQuestions, execute/awaitTerminal, execute/runInTerminal, read/terminalSelection, read/terminalLastCommand, read/getNotebookSummary, read/problems, read/readFile, agent/runSubagent, search/changes, search/codebase, search/fileSearch, search/listDirectory, search/searchResults, search/textSearch, search/usages, search/searchSubagent, web/fetch, context7/query-docs, context7/resolve-library-id, vscode.mermaid-chat-features/renderMermaidDiagram, todo]
 agents: ['GitHubOps', 'CodeExplorer', 'DocFetcher', 'WebSearcher', 'CodeScanner', 'SecurityReviewer', 'ArchitectureReviewer', 'PerformanceReviewer', 'MaintainabilityReviewer', 'PragmatistPlanner', 'CraftspersonPlanner', 'AdvocatePlanner', 'SecurityPlanner', 'ScalabilityPlanner', 'ConceptualistPlanner', 'DataIntegrityInvestigator', 'ControlFlowInvestigator', 'ConcurrencyInvestigator', 'EnvironmentInvestigator']
 handoffs:

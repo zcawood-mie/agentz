@@ -2,7 +2,7 @@
 name: PerformanceReviewer
 description: 'Performance-focused code reviewer. Use for: N+1 queries, memory leaks, blocking operations, scaling risks, database efficiency, performance review.'
 argument-hint: Provide a diff or file paths to review for performance concerns.
-model: 'Claude Sonnet 4.5'
+model: 'Claude Sonnet 4.6'
 tools: ['read', 'search', 'search/searchSubagent']
 user-invokable: false
 ---

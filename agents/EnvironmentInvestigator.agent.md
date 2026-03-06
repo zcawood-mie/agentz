@@ -2,7 +2,7 @@
 name: EnvironmentInvestigator
 description: 'Environment-focused bug investigator. Use for: config mismatch, deployment issue, dependency version, env variable, works locally, infrastructure, debugging.'
 argument-hint: Provide bug symptoms and relevant context to investigate from an environment/configuration perspective.
-model: 'Claude Sonnet 4.5'
+model: 'Claude Sonnet 4.6'
 tools: ['read', 'search', 'search/searchSubagent']
 user-invokable: false
 ---

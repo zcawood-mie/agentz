@@ -3,7 +3,7 @@ name: cleanupBranch
 description: Clean up committed changes on the current branch
 argument-hint: Optionally provide the base branch name (defaults to auto-detect)
 agent: Implementation
-model: 'Claude Sonnet 4.5'
+model: 'Claude Sonnet 4.6'
 ---
 Clean up the committed changes on the current branch.
 

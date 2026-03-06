@@ -2,7 +2,7 @@
 name: CodeScanner
 description: 'Scan code for dead code, security issues, and refactoring opportunities. Use for: dead code, unused exports, security scan, refactoring, code quality, lint, audit.'
 argument-hint: Provide file paths or a diff to scan, and optionally which scan types to run.
-model: 'Claude Sonnet 4.5'
+model: 'Claude Sonnet 4.6'
 tools: ['read', 'search', 'search/searchSubagent']
 user-invokable: false
 ---

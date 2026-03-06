@@ -2,7 +2,7 @@
 name: ConcurrencyInvestigator
 description: 'Timing-focused bug investigator. Use for: race condition, stale read, optimistic concurrency, async ordering, double submit, reactive timing, debugging.'
 argument-hint: Provide bug symptoms and relevant context to investigate from a concurrency/timing perspective.
-model: 'Claude Sonnet 4.5'
+model: 'Claude Sonnet 4.6'
 tools: ['read', 'search', 'search/searchSubagent']
 user-invokable: false
 ---
