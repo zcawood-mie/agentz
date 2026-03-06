@@ -45,6 +45,16 @@ description: 'Git commit conventions and history rules. Use for: git commit, com
 - A clean trail of small commits is always preferred over a "polished" history
 - **If the user asks** for amend, squash, rebase, or fixup — do it. Otherwise, never.
 
+## Pre-Commit Verification
+
+Before every `git commit`, verify the diff:
+1. Run `git diff --cached` (or `git diff` if nothing staged yet)
+2. Confirm the diff contains **only** the intended changes
+3. Watch for accidental inclusions: debug logging, unrelated edits, commented-out code
+4. If unrelated changes are in the working tree, use `git stash` → edit → stage → commit → `git stash pop` to isolate the commit
+
+Never run `git commit` without first viewing and verifying the diff.
+
 ---
 
 ## Rules
@@ -53,8 +63,10 @@ description: 'Git commit conventions and history rules. Use for: git commit, com
 - Use conventional commit format
 - One logical change per commit
 - Imperative mood in subject line
+- Verify the diff before committing
 
 **NEVER (no exceptions):**
 - Stage agent/skill files (`~/.agents/`)
 - Stage or commit submodule reference (hash) changes — a bot manages these automatically
 - Batch multiple unrelated fixes into a single commit
+- Commit without checking `git diff` or `git diff --cached` first
