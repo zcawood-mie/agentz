@@ -145,7 +145,28 @@ Add an `## Available Scripts` section at the end of the SKILL.md with:
 
 ## Cached User Context
 
-Some skills need user-specific inputs (GitHub username, team workflow, org name, etc.) that don't change between invocations. Rather than asking every time or requiring upfront configuration, skills should **ask once and remember**.
+Some skills need user-specific inputs (GitHub username, team workflow, org name, project table, etc.) that don't change between invocations. Rather than asking every time or requiring upfront configuration, skills should **ask once and remember**.
+
+### When to Use Memory
+
+Memory is for **user-specific information** that makes generic skills work with a specific person's setup:
+- Their projects, repos, workspace paths, build commands
+- Their GitHub identity, org, team workflow
+- Their i18n system, language files, template engine syntax
+- Their review pipeline, blocking conditions, tools
+
+### When NOT to Use Memory
+
+Do not use memory as a general-purpose indirection layer. If the information is the same for all users of a skill, it belongs **directly in the skill** — not behind a memory lookup.
+
+| Belongs in memory | Belongs in the skill |
+|---|---|
+| User's GitHub username | How to classify PR states |
+| User's project table and build commands | How the implementation workflow phases work |
+| User's i18n package and syntax | The rule that user-facing strings must be translated |
+| User's workspace layout paths | How worktrees are structured conceptually |
+
+**Heuristic:** If you can answer "would a different user need a different value here?" with yes — it goes in memory. If the answer is no — it stays in the skill.
 
 ### The Pattern
 
