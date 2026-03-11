@@ -21,9 +21,10 @@ Open a labeled, interactive terminal for each worktree that is relevant to the c
 2. **Open a terminal per relevant worktree**
    For each identified worktree, run (with `isBackground=false`):
    ```
-   cd ~/bhDev/worktrees/WORKTREE-NAME && echo -ne "\033]0;WORKTREE-NAME\007"
+   cd <worktrees>/WORKTREE-NAME && echo -ne "\033]0;WORKTREE-NAME\007"
    ```
    This navigates the terminal to the worktree root and sets the tab title to the worktree name.
+   Resolve `<worktrees>` from the `project-registry` skill's cached memory.
 
 3. **Summarize**
    List the terminals opened. One line each.
