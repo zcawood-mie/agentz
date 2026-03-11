@@ -149,11 +149,12 @@ Some skills need user-specific inputs (GitHub username, team workflow, org name,
 
 ### When to Use Memory
 
-Memory is for **user-specific information** that makes generic skills work with a specific person's setup:
+Memory is for information that **shouldn't be committed to the public agents repo** — either because it's user-specific or because it's project-specific operational knowledge that only applies to a particular user's environment:
 - Their projects, repos, workspace paths, build commands
 - Their GitHub identity, org, team workflow
 - Their i18n system, language files, template engine syntax
 - Their review pipeline, blocking conditions, tools
+- Project-specific test commands, setup scripts, and operational config
 
 ### When NOT to Use Memory
 
@@ -166,7 +167,19 @@ Do not use memory as a general-purpose indirection layer. If the information is 
 | User's i18n package and syntax | The rule that user-facing strings must be translated |
 | User's workspace layout paths | How worktrees are structured conceptually |
 
-**Heuristic:** If you can answer "would a different user need a different value here?" with yes — it goes in memory. If the answer is no — it stays in the skill.
+**Heuristic:** If you can answer "would a different user need a different value here?" with yes — it goes in memory. If the answer is no — it stays in the skill. Similarly, if the information is project-specific and shouldn't be public, it goes in project memory.
+
+### Project Memory as Data, Not Scripts
+
+Project memory files (`/memories/projects/<key>/`) contain **data and command templates** — not executable scripts. Scripts stay in skills where they're discoverable and follow skill conventions; memories provide the project-specific values that parameterize those scripts.
+
+```
+memories/projects/<key>/
+  setup.md          # Install command, build artifacts, dev config (read by worktree-management, project-reset)
+  test.md           # Test command template, database isolation rules (read by testing-workflow)
+```
+
+The pattern: a skill's generic script accepts arguments, and the agent reads project memory to know what arguments to pass. For simpler cases (like test commands), the memory contains a **command template** the agent runs directly — no wrapper script needed.
 
 ### The Pattern
 

@@ -5,25 +5,22 @@ user-invokable: false
 ---
 # Memory Access
 
-Global agent memory files live at `<agents-root>/memories/` — **outside** the VS Code workspace. This skill provides prompt-free access to them and clarifies when to use global memory vs repo memory.
+Global agent memory files live at `~/.agents/memories/` — **outside** the VS Code workspace. This skill provides prompt-free access to them.
 
-## When to Use Global Memory (`~/.agents/memories/`)
+## When to Use
 
-Store data here when it is **stable across projects and sessions**:
+Store data here when it **shouldn't be committed to the public agents repo** — either because it's user-specific or because it's project-specific operational knowledge that only applies to this user's environment:
 - User configuration (GitHub username, team workflow, org name)
 - Skill caches (PR dashboard context, saved preferences)
 - Cross-project knowledge (things true regardless of which repo is open)
+- Project-scoped setup, test config, and command templates (`projects/<key>/setup.md`, `projects/<key>/test.md`)
 
-## When NOT to Use Global Memory
+## When NOT to Use
 
-For **project-specific facts** — conventions, build commands, codebase structure — use **repo memory** (`.copilot/memories/` inside the workspace). Repo memory is managed by Copilot automatically and scoped to the current project.
-
-| Question | Global (`~/.agents/memories/`) | Repo (`.copilot/memories/`) |
-|---|---|---|
-| Does this change if I switch projects? | No | Yes |
-| Who manages it? | Skills explicitly (via this skill) | Copilot automatically |
-| Scope | All workspaces | Current workspace only |
-| Examples | GitHub username, review pipeline | "Uses Meteor", "Tests: `npm test`" |
+- Domain knowledge, methodology, or rules — that belongs in skills
+- Project-specific facts common to all developers (conventions, codebase structure) — Copilot's repo memory (`.copilot/memories/`) handles that automatically
+- Volatile state like current branch names or PR lists
+- Secrets or tokens
 
 ## The Problem
 
@@ -74,6 +71,18 @@ Pass the memory name and content as two arguments. This performs **atomic full-f
 - Use `read_file` for memory files outside the workspace — it triggers an approval prompt
 - Use `create_file` or `replace_string_in_file` for memory files — these show changes in VS Code
 - Use incremental edits on memory files — always write the complete content
+
+## Project Memory Structure
+
+Project-specific operational knowledge lives under `/memories/projects/<key>/` in domain-scoped files:
+
+```
+memories/projects/<key>/
+  setup.md          # Install command, build artifacts, dev config
+  test.md           # Test command template, database isolation rules
+```
+
+Domain memory files are owned by the skill responsible for that domain (e.g., `test.md` is owned by `testing-workflow`). They contain **data and command templates** — not executable scripts. Scripts live in skills where they're discoverable; memories provide the project-specific values that parameterize those scripts.
 
 ## Available Scripts
 
