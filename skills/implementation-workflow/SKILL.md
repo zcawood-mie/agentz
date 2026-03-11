@@ -12,9 +12,9 @@ description: 'Implementation execution cycle and discipline. Use for: implement,
 
 ## Workspace Location
 
-**All active development happens in worktrees** (`<worktrees>/<repo>--<branch>/`), never in master repos (`<master-repos>/`). If you're in a master repo, stop and follow the `worktree-management` skill to create or switch to a worktree first.
+**Ensure you're on a feature branch, not the default branch.** If the project uses worktrees, make sure you're in the worktree directory — see the `worktree-management` skill.
 
-Resolve `<worktrees>` and `<master-repos>` from the `project-registry` skill's cached memory.
+Read project paths from the `project-registry` skill's index (`/memories/project-index.md`).
 
 ## Change Discipline
 
@@ -66,20 +66,11 @@ Before writing any code:
 1. Mark todo as in-progress
 2. Make code changes
 3. Mark todo as completed
-4. Verify changes compile/run — load `project-registry` to get the correct test/build command for the project before running anything
+4. Verify changes compile/run
 
 ### Phase 4: Test and Debug (Autonomous)
 
-Follow the `testing-workflow` skill if doing structured testing.
-
-**For API/backend projects:** Load `project-registry` to find the project-specific test command. Never construct test commands manually from `package.json` — the registry script may handle database isolation, env setup, or other concerns.
-
-For quick verification:
-1. Use Chrome DevTools to visually inspect
-2. Check console for errors
-3. Check network tab for failed requests
-4. If issues found: debug, fix, test again
-5. Repeat until working
+Follow the `testing-workflow` skill for test methodology, project-specific test commands, and database isolation rules. Debug and fix issues autonomously before reporting back.
 
 ### Phase 5: Report Back
 
@@ -110,4 +101,4 @@ When complete, report:
 - Ask permission for each individual step
 - Output code blocks instead of editing files
 - Skip testing after implementation
-- Edit files in master repos — always work in a worktree
+- Edit files on the default branch — always work on a feature branch

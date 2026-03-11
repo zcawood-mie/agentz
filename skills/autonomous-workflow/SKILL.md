@@ -40,27 +40,14 @@ Follow the `planning` skill methodology:
 ### Phase 4: Worktree Creation
 Follow the `worktree-management` skill to create a worktree for active development.
 
-1. Identify the target project and its master repo path from the `project-registry` skill
-2. Sync the master repo:
-   ```bash
-   cd <master-repos>/<repo>
-   git fetch origin && git pull
-   ```
-3. Create a worktree with the feature branch:
-   ```bash
-   BRANCH="feature/issue-<number>-<short-description>"
-   DIR_NAME="<repo>--$(echo "$BRANCH" | tr '/' '-')"
-   git worktree add <worktrees>/"$DIR_NAME" -b "$BRANCH" origin/<default-branch>
-   ```
-4. Switch into the worktree for all subsequent work:
-   ```bash
-   cd <worktrees>/"$DIR_NAME"
-   ```
-5. Branch naming: `feature/<ticket-id>-<short-description>`
+1. Read workspace paths from the `project-registry` skill (`/memories/project-index.md`)
+2. Read project setup config from `/memories/projects/<key>/setup.md`
+3. Follow the `worktree-management` skill's "Creating a Worktree" steps (or use `create-worktree.sh`)
+4. Branch naming: `feature/<ticket-id>-<short-description>`
    - For GitHub issues: `feature/issue-<number>-<short-description>`
    - Keep `<short-description>` to 3-4 hyphenated words max
 
-**All remaining phases happen inside the worktree directory.** Never go back to the master repo to make changes.
+**All remaining phases happen inside the feature branch directory.** Never make changes on the default branch.
 
 ### Phase 5: Incremental Implementation
 Follow the `implementation-workflow` skill for change discipline and available specialists.

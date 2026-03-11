@@ -1,53 +1,33 @@
 ---
 name: worktree-management
-description: 'Git worktree lifecycle and workspace layout rules. Use for: worktree, branch, new feature, workspace structure, master repo, active development, create worktree.'
+description: 'Git worktree lifecycle and workspace layout rules. Use for: worktree, branch, new feature, workspace structure, active development, create worktree.'
 user-invokable: false
 ---
 # Worktree Management
 
+Git worktrees let you have multiple branches checked out simultaneously in separate directories. This skill covers worktree creation, setup, and lifecycle — the mechanics are universal, but workspace paths and project config come from memory.
+
 ## When to Use
-- Starting active development on any branch
+- Starting active development on a new branch
 - Creating a feature branch for a ticket
-- Determining where to make code changes
 - Cleaning up after a branch is merged
 
-## Workspace Layout
+## Workspace Context
 
-Refer to the `project-registry` skill for the full project table and workspace paths. Read the cached config from memory:
+Read the project-index memory for workspace layout, and the project's setup file for install/build config:
 ```bash
-~/.agents/skills/memory-access/scripts/read-memory.sh project-registry
+~/.agents/skills/memory-access/scripts/read-memory.sh project-index
+~/.agents/skills/memory-access/scripts/read-memory.sh projects/<project>/setup
 ```
 
-The memory file defines `<workspace-root>`, `<master-repos>`, and `<worktrees>` paths. The standard layout:
-
-```
-<workspace-root>/
-  masterRepos/          # Reference copies on default branch
-    <project>/          # One per project listed in the registry
-  worktrees/            # Active development — one worktree per branch
-    <repo>--<branch>/   # e.g. my-api--feature-issue-42-add-endpoint
-```
-
-### Master Repos (`masterRepos/`)
-- Always stay on the default branch (`master` or `main`)
-- **Never** create feature branches here
-- **Never** make code changes here
-- Used for: fetching, pulling latest, creating worktrees, research/reference
-- May be used for running/testing the app on the default branch
-
-### Worktrees (`worktrees/`)
-- One directory per active branch
-- Naming convention: `<repo-name>--<branch-name>`
-  - Branch slashes become hyphens in the directory name: `feature/issue-42-add-endpoint` → `my-api--feature-issue-42-add-endpoint`
-- All active development happens here
-- Delete the worktree directory when the branch is merged
+The index defines where repos live and (optionally) a dedicated worktree directory. If the user doesn't use a separate worktree directory, worktrees are created as siblings of the source repo or wherever the user specifies.
 
 ## Creating a Worktree
 
-### Step 1: Ensure master repo is up to date
+### Step 1: Ensure the source repo is up to date
 
 ```bash
-cd <master-repos>/<repo>
+cd <repo-path>
 git fetch origin
 git pull
 ```
@@ -55,57 +35,46 @@ git pull
 ### Step 2: Create the worktree
 
 ```bash
-# Sanitize branch name for directory: replace / with -
 BRANCH="feature/issue-42-add-endpoint"
 DIR_NAME="<repo>--$(echo "$BRANCH" | tr '/' '-')"
 
-git worktree add <worktrees>/"$DIR_NAME" -b "$BRANCH" origin/<default-branch>
+# If using a dedicated worktree directory:
+git worktree add <worktree-dir>/"$DIR_NAME" -b "$BRANCH" origin/<default-branch>
+
+# Otherwise, create alongside the repo:
+git worktree add ../"$DIR_NAME" -b "$BRANCH" origin/<default-branch>
 ```
 
-This creates a new branch tracking the default branch and checks it out in the worktree directory.
+Branch naming convention: `<repo-name>--<branch-name>` (slashes become hyphens).
 
 ### Step 3: Initialize submodules (if applicable)
 
 **`git worktree add` does NOT initialize submodules.** For projects with submodules, you must do this explicitly.
 
-**Important:** Initialize submodules **one at a time**, not with a blanket `git submodule update --init --recursive`. The parallel clones can overwhelm SSH connections and cause timeouts. The master repo's `.git/modules/` already has cached clones, so individual updates are instant (no network needed).
+**Important:** Initialize submodules **one at a time**, not with `git submodule update --init --recursive`. Parallel clones can overwhelm SSH connections and cause timeouts. The source repo's `.git/modules/` already has cached clones, so individual updates are instant.
 
 ```bash
-cd <worktrees>/"$DIR_NAME"
-
-# List all submodules from .gitmodules
+cd <worktree-path>
 git submodule init
-
-# Update each submodule individually (avoids SSH connection limits)
 git submodule foreach --quiet 'echo $sm_path' | while read sm; do
   git submodule update --init "$sm"
 done
 ```
 
-**Verify all submodules are populated:**
+**Verify submodules are populated:**
 ```bash
 git submodule foreach 'echo $sm_path: $(ls | head -1)'
 ```
 
-If any submodule directory is empty, run `git submodule update --init <path>` for that specific submodule.
-
-> **Gotcha:** Submodules may live outside `packages/` (e.g. `cypress` at the repo root). Always check `.gitmodules` for the complete list — don't assume all submodules are under `packages/`.
+> **Gotcha:** Submodules may live outside `packages/` (e.g. `cypress` at the repo root). Always check `.gitmodules` for the complete list.
 
 ### Step 4: Generate build artifacts and copy dev config (if needed)
 
-Refer to the `project-registry` skill for per-project setup details. Projects that need build artifacts or dev config copies are listed there with exact commands.
+Refer to the project's setup file (`/memories/projects/<project>/setup.md`) for per-project setup details — build artifacts, config file copies, etc.
 
-### Step 5: Switch to the worktree
+### Step 5: Install dependencies
 
-```bash
-cd <worktrees>/"$DIR_NAME"
-```
-
-**All subsequent work happens in this directory.**
-
-### Step 6: Install dependencies
-
-Run the project's install command from the `project-registry` skill:
+Run the project's install command from the setup file:
 - Meteor projects: `meteor npm install`
 - pnpm projects: `pnpm install`
 - Node projects: `npm install`
@@ -113,20 +82,15 @@ Run the project's install command from the `project-registry` skill:
 ## Listing Worktrees
 
 ```bash
-cd <master-repos>/<repo>
+cd <repo-path>
 git worktree list
-```
-
-Or simply:
-```bash
-ls <worktrees>/ | grep "^<repo>--"
 ```
 
 ## Removing a Worktree (After Branch Is Merged)
 
 ```bash
-cd <master-repos>/<repo>
-git worktree remove <worktrees>/<repo>--<branch-dir>
+cd <repo-path>
+git worktree remove <worktree-path>
 # Optionally delete the branch if fully merged:
 git branch -d <branch-name>
 ```
@@ -134,22 +98,11 @@ git branch -d <branch-name>
 ## Syncing a Worktree with Upstream
 
 ```bash
-cd <worktrees>/<repo>--<branch-dir>
+cd <worktree-path>
 git pull --rebase origin <default-branch>
 ```
 
 Follow the `git-sync` skill for conflict resolution and post-sync verification.
-
-## Determining Where You Are
-
-When starting any task, check whether you're in:
-1. **A worktree** (`<worktrees>/...`) → Good, proceed with development
-2. **A master repo** (`<master-repos>/...`) → **Stop.** Create or switch to a worktree first.
-
-To check programmatically:
-```bash
-[[ "$PWD" == */worktrees/* ]] && echo "worktree" || echo "master repo"
-```
 
 ## Rules
 
@@ -162,14 +115,6 @@ To check programmatically:
 
 ## Troubleshooting
 
-### App crashes with "Unknown asset: build_info/head"
-The `private/build_info/` directory and files are gitignored and generated by `bin/start.js`. Create them manually:
-```bash
-mkdir -p private/build_info
-git rev-parse --short HEAD > private/build_info/head
-date +%s000 > private/build_info/time
-```
-
 ### Module not found errors for submodule paths
 Submodules were not initialized. Run:
 ```bash
@@ -180,31 +125,43 @@ done
 ```
 
 ### SSH timeout during submodule clone
-Too many parallel SSH connections to GitHub. Init submodules one at a time (see above). The master repo's `.git/modules/` cache means most updates are instant local checkouts, not network clones.
+Too many parallel SSH connections. Init submodules one at a time (see above). The source repo's `.git/modules/` cache means most updates are instant local checkouts.
 
 ### Submodule directories exist but are empty
-Same as above — `git worktree add` creates the directories from the tree but doesn't populate submodule content. You must explicitly initialize them.
+`git worktree add` creates the directories from the tree but doesn't populate submodule content. You must explicitly initialize them.
 
 ---
 
 ## Available Scripts
 
 ### create-worktree.sh
-Automates the full 6-step worktree creation process: fetch, branch, submodules, build_info, config copy, and dependency install. Embeds the project registry.
+Automates worktree creation: fetch, branch, submodules, build artifacts, config copy, and dependency install. All project-specific configuration is passed as arguments — read the project-index memory for workspace paths and the project's setup memory for config flags.
 
 ```bash
-# Create a worktree for a project
-bash scripts/create-worktree.sh my-employer feature/issue-42-fix
+# Read workspace paths and project config from memory first
+~/.agents/skills/memory-access/scripts/read-memory.sh project-index
+~/.agents/skills/memory-access/scripts/read-memory.sh projects/<repo>/setup
 
-# Branch from a specific base
-bash scripts/create-worktree.sh my-api feature/new-endpoint --base main
+# Basic usage — worktrees go alongside the repo by default
+bash scripts/create-worktree.sh my-api feature/new-endpoint \
+  --repo-dir /path/to/my-api \
+  --base main --install-cmd "pnpm install" --env-copy
 
-# Skip dependency installation
-bash scripts/create-worktree.sh my-app feature/big-change --no-install
+# With dedicated worktree directory
+bash scripts/create-worktree.sh my-app feature/big-change \
+  --repo-dir /path/to/my-app --worktree-dir /path/to/worktrees \
+  --base master --install-cmd "meteor npm install" \
+  --submodules --build-info --build-packages
 
 # Preview what would happen
-bash scripts/create-worktree.sh my-employer fix/typo --dry-run
+bash scripts/create-worktree.sh my-api fix/typo \
+  --repo-dir /path/to/my-api --base main --dry-run
 ```
+
+**Required options:** `--repo-dir`
+**Optional:** `--worktree-dir` (defaults to parent of repo-dir)
+**Project config flags:** `--base`, `--install-cmd`, `--submodules`, `--build-info`, `--build-packages`, `--env-copy`
+**Execution flags:** `--no-install`, `--dry-run`
 
 **Exit codes:** 0 = success, 1 = creation error, 2 = invalid arguments
 

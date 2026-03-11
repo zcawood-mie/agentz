@@ -6,24 +6,24 @@ description: 'Reset a project to a clean state on the default branch. Use for: r
 # Project Reset
 
 ## When to Use
-- Syncing a master repo to the latest default branch
-- Preparing a master repo for research or reference
-- Verifying the master repo is clean before creating a worktree
+- Syncing a repository to the latest default branch
+- Preparing a clean starting point for research or reference
+- Ensuring a repo is in a clean state before branching
 
-**NOTE:** This skill applies to master repos only (`<master-repos>/`). Master repos stay on their default branch at all times. For active development, follow the `worktree-management` skill to create a worktree in `<worktrees>/`.
+**NOTE:** This skill resets a repository to its default branch. It's typically used on the main clone (not active worktrees or feature branches). For active development, follow the `worktree-management` skill.
 
-Resolve `<master-repos>` and `<worktrees>` from the `project-registry` skill's cached memory.
+Read project paths from the `project-registry` skill's index (`/memories/project-index.md`).
 
 ## Project Lookup
 
-Refer to the `project-registry` skill for each project's default branch, submodule scripts, dev stash requirements, and other configuration.
+Refer to the project's setup file (`/memories/projects/<project>/setup.md`) for dev stash requirements, build artifacts, and other configuration. Default branches and submodule status come from the index.
 
 ## Reset Workflow
 
 ### Phase 1: Identify and Validate
 
 1. **Determine the project** from `$PWD` or user input
-2. **Look up the project** in the `project-registry` skill
+2. **Look up the project** in the `project-registry` skill (read index + project detail file)
 3. **Identify the default branch** from the registry
 4. **Check for uncommitted changes:**
    ```bash
@@ -128,7 +128,7 @@ If any step failed, list the failures clearly and ask the user how to proceed.
 - Use `git stash apply` for developer stashes (preserves the stash)
 - Report failures clearly and ask the user for guidance
 - Verify the final state after all steps complete
-- Keep master repos on their default branch at all times
+- Keep the main clone on its default branch at all times
 
 **NEVER:**
 - Use `git stash pop` — always `apply` to keep the stash around
@@ -136,5 +136,5 @@ If any step failed, list the failures clearly and ask the user how to proceed.
 - Assume a stash index — always list and identify the correct one
 - Skip submodule updates on projects that have submodule scripts
 - Hard-code stash names — stash descriptions change over time
-- Create feature branches in master repos — use `worktree-management` skill instead
-- Switch master repos away from their default branch
+- Create feature branches on the main clone — use `worktree-management` skill or a separate checkout instead
+- Switch the main clone away from its default branch

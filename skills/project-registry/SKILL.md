@@ -1,73 +1,66 @@
 ---
 name: project-registry
 user-invokable: false
-description: 'Project inventory and per-project configuration. Use for: project list, default branch, submodules, install command, build artifacts, dev config, workspace layout, project lookup.'
+description: 'Project inventory and workspace layout. Use for: project list, default branch, submodules, workspace layout, project lookup, GitHub org.'
 ---
 # Project Registry
 
-Domain knowledge about all projects in the workspace — workspace layout, project table, per-project setup details, test commands, and database configuration.
+Thin registry for project identity and workspace layout. Answers: "does this project exist, what's its default branch, and where does it live." Operational details (setup, testing, etc.) live in domain-specific memory files owned by other skills.
 
-## Cached Context
+## Data Layout
 
-All project-specific data lives in user memory (`/memories/project-registry.md`). Read it using the `memory-access` skill:
-```bash
-~/.agents/skills/memory-access/scripts/read-memory.sh project-registry
+```
+memories/
+  project-index.md              # Workspace layout, org, project list, default DB
+  projects/
+    <key>/
+      setup.md                  # Owned by: worktree-management, project-reset
+      test.md                   # Owned by: testing-workflow
 ```
 
-If the memory file does not exist, ask the user the following questions (together, not one at a time), then save the answers using `write-memory.sh`:
+Each skill reads only its own slice. This skill owns the index.
 
-1. Where is your workspace root? (e.g., `~/mydev`)
-2. What is the directory structure? (e.g., `masterRepos/` + `worktrees/`)
+### Layer 1 — Project-Committed (in each project repo)
+Team conventions committed to `.github/copilot-instructions.md` or project-level skills. Loaded automatically by VS Code when that workspace is open. This skill doesn't manage Layer 1.
+
+### Layer 2 — User-Specific Domain Files (`/memories/projects/<key>/<domain>.md`)
+Per-project configuration split by domain. Each domain file is owned by the skill responsible for that concern — see the data layout above for ownership.
+
+### Layer 3 — User-Specific Index (`/memories/project-index.md`)
+Workspace root, directory structure, GitHub org, project list with default branches, default database. Lightweight — never contains operational details.
+
+## How to Load Context
+
+### Index lookup (workspace paths, project list)
+```bash
+~/.agents/skills/memory-access/scripts/read-memory.sh project-index
+```
+
+### Determining the current project
+Use the repository attachment context (`owner/repo-name`) to map to a project key. If no repo context is available, infer from `$PWD` or ask the user.
+
+## First-Time Setup
+
+If `/memories/project-index.md` does not exist, ask the user these questions (together, not one at a time), then save using `write-memory.sh`:
+
+1. Where is your workspace root? (e.g., `~/dev`)
+2. Describe your workspace layout — where are your repos? Do you use worktrees? If so, where do they go?
 3. What GitHub org do your projects belong to?
-4. For each project: name, default branch, submodule support, install command, build artifacts needed, dev config copy needed, dev stash needed
-5. Per-project setup details (build artifact commands, config files, etc.)
-6. Test commands and database isolation rules (if applicable)
-7. Default local database name (if applicable)
+4. List all projects with their default branches and whether they have submodules
+5. Default local database name (if applicable)
 
-Use the `## Workspace Layout`, `## Project Table`, `## Per-Project Setup Details`, `## Test Commands`, and `## Database` sections as the memory file structure — see the `pr-dashboard` skill for the cache pattern.
+Save to `project-index` using the `## Workspace Layout`, `## Projects`, and `## Database` sections.
 
-## How to Use the Registry
+Then prompt the user for per-project setup details and save to `projects/<key>/setup` (see `worktree-management` skill). If the project has test infrastructure, save test config to `projects/<key>/test` (see `testing-workflow` skill).
 
-Once the memory file exists, all references in this skill use placeholder paths that resolve from the cached layout:
-- `<workspace-root>` → the workspace root (e.g., `~/bhDev`)
-- `<master-repos>` → `<workspace-root>/masterRepos/`
-- `<worktrees>` → `<workspace-root>/worktrees/`
-- `<project>` → the specific project name from the table
+## Placeholder Paths
 
-All master repo paths follow the pattern `<master-repos>/<project>`.
+Across this skill and others, these placeholders resolve from the project-index memory:
+- `<workspace-root>` → the user's workspace root directory
+- `<project>` → the specific project name
+
+Workspace layout varies by user. The index stores whatever directory structure the user has — repos may be in a flat directory, nested org folders, or a master-clone + worktree setup. Always read paths from the index, never assume a particular layout.
 
 ## Column Definitions
 
-**Has Submodules** means the project has `switch-branches.sh` and `update-packages.sh` scripts in its root.
-
-**Dev Stash Needed** means the project requires a developer configuration stash to be applied after reset (contains login credentials, local config, etc.).
-
-## Test Command Rules
-
-When test commands are defined in the memory file for a project, follow these rules:
-- **ALWAYS** set `MONGODB_DATABASE` to a unique test database name when projects share a database. Without this override, tests performing `deleteMany({})` will destroy shared development data.
-- **ALWAYS** target individual test files — never use wildcards
-- If multiple test files are relevant, list them explicitly
-- Use the skill's `run-api-test.sh` script when available — it handles database isolation automatically
-
-## Available Scripts
-
-### `scripts/run-api-test.sh`
-
-Run tests for projects that have test database isolation configured. Generates a unique `MONGODB_DATABASE` name per invocation.
-
-**Usage:**
-```bash
-cd <worktrees>/<project>--<branch>
-~/.agents/skills/project-registry/scripts/run-api-test.sh test/brands.test.ts
-~/.agents/skills/project-registry/scripts/run-api-test.sh test/brands.test.ts test/integrations.test.ts
-```
-
-**Exit codes:**
-- `0` — all tests passed
-- `1` — test failure(s)
-- `2` — usage error (no args, invalid file)
-
-## Build Artifact Context
-
-Some Meteor projects require generated files that are gitignored but needed at runtime. These are normally created by the start script (`bin/start.js`) but must exist before the app can boot. The files are read by the server at startup via `Assets.getTextAsync()`. Without them, the app crashes with `Error: Unknown asset: build_info/head`.
+**Has Submodules** means the project uses git submodules. See `worktree-management` for submodule initialization steps.
