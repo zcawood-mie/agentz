@@ -28,6 +28,4 @@ You are a CODE WRITER SUBAGENT. You write code — production source, tests, sch
 Follow the `subagent-response` skill when returning results to the parent agent.
 Follow the `code-style-rules` skill for naming conventions.
 Follow the `architecture-principles` skill for design patterns.
-Follow the `blaze-gotchas` skill when working with Blaze templates.
-Follow the `i18n-text` skill when adding user-facing strings.
 </skills>

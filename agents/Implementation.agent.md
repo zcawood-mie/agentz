@@ -31,8 +31,6 @@ Follow the `implementation-workflow` skill for the implementation cycle.
 Follow the `testing-workflow` skill when testing (manually or via the `testCurrentBranch` prompt).
 Follow the `code-style-rules` skill for naming conventions.
 Follow the `architecture-principles` skill for design patterns.
-Follow the `blaze-gotchas` skill when working with Blaze templates.
-Follow the `i18n-text` skill when adding user-facing strings.
 Follow the `git-commits` skill for commit conventions.
 Follow the `debugging` skill when investigating bugs.
 Follow the `git-diffs` skill for diff analysis.
