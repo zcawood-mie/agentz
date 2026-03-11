@@ -1,11 +1,12 @@
 ---
 name: testing-workflow
 user-invokable: false
-description: 'Manual testing methodology and reporting. Use for: test, QA, manual test, verify, check, browser test, smoke test, regression test, validate, test plan.'
+description: 'Testing methodology — running, verifying, and reporting test results. Use for: run tests, test, unit test, integration test, automated test, manual test, test suite, QA, verify, browser test, smoke test, regression test, validate, test plan.'
 ---
 # Testing Workflow
 
 ## When to Use
+- Running automated tests (unit, integration, test suites)
 - Manually testing a feature or fix
 - Verifying changes on the current branch
 - Running through test scenarios with browser/terminal/database tools
