@@ -65,9 +65,10 @@ No single primitive dictates step-by-step how to accomplish work. The approach i
 ├── prompts/         Reusable task templates — one-click workflows
 ├── skills/          Domain knowledge — facts, methodology, rules per domain
 ├── instructions/    Always-on rules — injected into every conversation
-└── hooks/           Lifecycle scripts — deterministic enforcement
-    ├── global.json  Hook configuration
-    └── scripts/     Shell scripts that run at lifecycle events
+├── hooks/           Lifecycle scripts — deterministic enforcement
+│   ├── global.json  Hook configuration
+│   └── scripts/     Shell scripts that run at lifecycle events
+└── memories/        User-specific config, managed by agents (gitignored)
 ```
 
 ## The Primitives
@@ -141,6 +142,7 @@ Skills cover areas like:
 - **Tech-specific** — `blaze-gotchas`, `i18n-text`, `mermaid-diagrams`
 - **Agent operations** — `subagent-dispatch`, `subagent-response`, `model-selection`, `session-review`
 - **Investigation** — `research`, `debugging`
+- **Memory infrastructure** — `memory-access` (read/write helpers for user config)
 
 Skills can also include executable scripts in a `scripts/` subdirectory for automated checks and transformations.
 
@@ -159,6 +161,33 @@ Instructions are injected into every conversation automatically. They represent 
 | `response-formatting` | Output structure, diagrams, tables, file link format |
 
 **File format:** `instructions/name.instructions.md` (lowercase-hyphenated)
+
+### Memories — User-Specific Configuration
+
+The `memories/` directory stores user-specific information that skills need to function — things like your GitHub username, project table, workspace layout, team review pipeline, and i18n configuration. This directory is **gitignored** so your personal data never enters version control.
+
+Memories exist because skills need to be generic while still working with your specific setup. Instead of hardcoding project names, org details, or workflow preferences into skills, the system uses a **cache-or-ask pattern:**
+
+1. When a skill runs and needs user-specific info, it checks for a cached memory file
+2. If no cache exists, it asks you the relevant questions and saves your answers
+3. On subsequent runs, it reads from cache — no repeated questioning
+
+This means a fresh clone works immediately. The first time you invoke a workflow that needs project info, the agent asks you; after that, it remembers.
+
+**What belongs in memory:**
+- Your projects, workspace layout, build commands, and test configurations
+- Your GitHub identity, org, and team review pipeline
+- Your i18n system, language files, and template syntax
+- Any stable, personal information that skills need but shouldn't hardcode
+
+**What does NOT belong in memory:**
+- Domain knowledge, methodology, or rules — that's skill content
+- Volatile state like current branch names or PR lists
+- Secrets or tokens
+
+Skills that use memory: `project-registry`, `pr-dashboard`, `i18n-text`, `worktree-management`, and `project-reset` (the latter two read from `project-registry`'s cache). See the `skill-conventions` skill for how to add memory-backed config to a new skill.
+
+**File format:** `memories/topic-name.md` (gitignored, managed by agents via the `memory-access` skill)
 
 ### Hooks — Deterministic Enforcement
 
