@@ -12,16 +12,16 @@ description: 'Create, edit, and improve agents, skills, prompts, instructions, a
 
 ## File Locations
 
-**IMPORTANT:** As a first step, always `list_dir` on `~/.agents/` to establish directory access upfront. This ensures a single approval covers all subdirectory reads/edits for the session.
+**IMPORTANT:** As a first step, always `list_dir` on `$AGENTS_ROOT/` to establish directory access upfront. This ensures a single approval covers all subdirectory reads/edits for the session.
 
 | Primitive | Location | Naming |
 |-----------|----------|--------|
-| Agents | `~/.agents/agents/[AgentName].agent.md` | PascalCase |
-| Skills | `~/.agents/skills/[skill-name]/SKILL.md` | lowercase-hyphenated |
-| Prompts | `~/.agents/prompts/[promptName].prompt.md` | camelCase |
-| Instructions | `~/.agents/instructions/[name].instructions.md` | lowercase-hyphenated |
-| Hooks | `~/.agents/hooks/global.json` + `scripts/[name].sh` | lowercase-hyphenated |
-| Tool Sets | `~/.agents/toolsets/[name].toolsets.jsonc` | lowercase |
+| Agents | `$AGENTS_ROOT/agents/[AgentName].agent.md` | PascalCase |
+| Skills | `$AGENTS_ROOT/skills/[skill-name]/SKILL.md` | lowercase-hyphenated |
+| Prompts | `$AGENTS_ROOT/prompts/[promptName].prompt.md` | camelCase |
+| Instructions | `$AGENTS_ROOT/instructions/[name].instructions.md` | lowercase-hyphenated |
+| Hooks | `$AGENTS_ROOT/hooks/global.json` + `scripts/[name].sh` | lowercase-hyphenated |
+| Tool Sets | `$AGENTS_ROOT/toolsets/[name].toolsets.jsonc` | lowercase |
 
 Agent, skill, prompt, and instruction files are user-local configuration — never stage or commit them.
 

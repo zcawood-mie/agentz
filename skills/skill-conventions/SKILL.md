@@ -10,7 +10,7 @@ user-invokable: false
 - Editing or reviewing an existing skill
 
 ## File Location
-`~/.agents/skills/<skill-name>/SKILL.md`
+`$AGENTS_ROOT/skills/<skill-name>/SKILL.md`
 - Folder: lowercase-hyphenated
 - File: always `SKILL.md` (uppercase)
 
@@ -126,7 +126,7 @@ Don't add a script for steps that are inherently judgment calls or require conte
 ### File Structure
 
 ```
-~/.agents/skills/<skill-name>/
+$AGENTS_ROOT/skills/<skill-name>/
   SKILL.md
   scripts/
     check-something.py
@@ -171,7 +171,7 @@ Do not use memory as a general-purpose indirection layer. If the information is 
 
 ### Project Memory as Data, Not Scripts
 
-Project memory files (`/memories/projects/<key>/`) contain **data and command templates** — not executable scripts. Scripts stay in skills where they're discoverable and follow skill conventions; memories provide the project-specific values that parameterize those scripts.
+Project memory files (`$AGENTS_ROOT/memories/projects/<key>/`) contain **data and command templates** — not executable scripts. Scripts stay in skills where they're discoverable and follow skill conventions; memories provide the project-specific values that parameterize those scripts.
 
 ```
 memories/projects/<key>/
@@ -193,8 +193,8 @@ The pattern: a skill's generic script accepts arguments, and the agent reads pro
 Name memory files by **topic**, not by skill. Multiple skills can reference the same memory file when they share context. Every memory file a skill reads or writes must be **explicitly named in that skill** — agents should never invent new memory file names at runtime.
 
 Examples:
-- `/memories/github-identity.md` — username, org, team workflow (referenced by `pr-dashboard`, `pr-workflow`, etc.)
-- `/memories/pr-dashboard.md` — dashboard-specific preferences referenced only by that skill
+- `$AGENTS_ROOT/memories/github-identity.md` — username, org, team workflow (referenced by `pr-dashboard`, `pr-workflow`, etc.)
+- `$AGENTS_ROOT/memories/pr-dashboard.md` — dashboard-specific preferences referenced only by that skill
 
 Memory files are known configuration files with defined contents. A skill may reference several, and a memory file may be referenced by several skills.
 
@@ -203,10 +203,10 @@ Memory files are known configuration files with defined contents. A skill may re
 List the memory files the skill uses and what it expects to find in each. Add a brief section before any user-question phase:
 
 ```markdown
-**Cached context:** Before asking, check `/memories/<topic>.md` for previously saved
+**Cached context:** Before asking, check `$AGENTS_ROOT/memories/<topic>.md` for previously saved
 answers. If found, use them and proceed — only re-ask if something looks stale or the user
 requests changes. If not found, ask the questions below, then save the answers to
-`/memories/<topic>.md` for future runs.
+`$AGENTS_ROOT/memories/<topic>.md` for future runs.
 ```
 
 ### Rules

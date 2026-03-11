@@ -66,7 +66,7 @@ Never run `git commit` without first viewing and verifying the diff.
 - Verify the diff before committing
 
 **NEVER (no exceptions):**
-- Stage agent/skill files (`~/.agents/`)
+- Stage agent/skill files (`$AGENTS_ROOT/`)
 - Stage or commit submodule reference (hash) changes — a bot manages these automatically
 - Batch multiple unrelated fixes into a single commit
 - Commit without checking `git diff` or `git diff --cached` first

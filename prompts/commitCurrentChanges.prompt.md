@@ -17,7 +17,7 @@ Review my current uncommitted changes, stage the relevant files, generate a conv
 
 3. **Filter out files that should NOT be staged**
    Follow the `git-push` skill's sensitive-content scan to identify files that should be excluded. Additionally exclude:
-   - Agent, skill, and prompt files (`~/.agents/`) — these are personal tooling, not project source
+   - Agent, skill, and prompt files (`$AGENTS_ROOT/`) — these are personal tooling, not project source
 
    If any blocking issues are found (secrets, credentials), report them and do NOT commit those files.
 

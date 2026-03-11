@@ -24,7 +24,7 @@ Open a labeled, interactive terminal for each worktree that is relevant to the c
    cd /path/to/worktree && echo -ne "\033]0;WORKTREE-NAME\007"
    ```
    This navigates the terminal to the worktree root and sets the tab title to the worktree name.
-   Resolve worktree paths from the `project-registry` skill's index (`/memories/project-index.md`).
+   Resolve worktree paths from the `project-registry` skill's index (`$AGENTS_ROOT/memories/project-index.md`).
 
 3. **Summarize**
    List the terminals opened. One line each.

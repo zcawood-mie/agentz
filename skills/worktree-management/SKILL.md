@@ -16,8 +16,8 @@ Git worktrees let you have multiple branches checked out simultaneously in separ
 
 Read the project-index memory for workspace layout, and the project's setup file for install/build config:
 ```bash
-~/.agents/skills/memory-access/scripts/read-memory.sh project-index
-~/.agents/skills/memory-access/scripts/read-memory.sh projects/<project>/setup
+$AGENTS_ROOT/skills/memory-access/scripts/read-memory.sh project-index
+$AGENTS_ROOT/skills/memory-access/scripts/read-memory.sh projects/<project>/setup
 ```
 
 The index defines where repos live and (optionally) a dedicated worktree directory. If the user doesn't use a separate worktree directory, worktrees are created as siblings of the source repo or wherever the user specifies.
@@ -70,7 +70,7 @@ git submodule foreach 'echo $sm_path: $(ls | head -1)'
 
 ### Step 4: Generate build artifacts and copy dev config (if needed)
 
-Refer to the project's setup file (`/memories/projects/<project>/setup.md`) for per-project setup details — build artifacts, config file copies, etc.
+Refer to the project's setup file (`$AGENTS_ROOT/memories/projects/<project>/setup.md`) for per-project setup details — build artifacts, config file copies, etc.
 
 ### Step 5: Install dependencies
 
@@ -139,8 +139,8 @@ Automates worktree creation: fetch, branch, submodules, build artifacts, config 
 
 ```bash
 # Read workspace paths and project config from memory first
-~/.agents/skills/memory-access/scripts/read-memory.sh project-index
-~/.agents/skills/memory-access/scripts/read-memory.sh projects/<repo>/setup
+$AGENTS_ROOT/skills/memory-access/scripts/read-memory.sh project-index
+$AGENTS_ROOT/skills/memory-access/scripts/read-memory.sh projects/<repo>/setup
 
 # Basic usage — worktrees go alongside the repo by default
 bash scripts/create-worktree.sh my-api feature/new-endpoint \

@@ -125,9 +125,9 @@ Do NOT fix code during testing. Report only.
 
 ## Per-Project Test Configuration
 
-Test commands and database isolation rules live in per-project memory files at `/memories/projects/<key>/test.md`. Read the current project's test config before running any tests:
+Test commands and database isolation rules live in per-project memory files at `$AGENTS_ROOT/memories/projects/<key>/test.md`. Read the current project's test config before running any tests:
 ```bash
-~/.agents/skills/memory-access/scripts/read-memory.sh projects/<project>/test
+$AGENTS_ROOT/skills/memory-access/scripts/read-memory.sh projects/<project>/test
 ```
 
 If the test memory file doesn't exist, the project either doesn't have automated tests or hasn't been configured yet. Ask the user.
@@ -152,7 +152,7 @@ Each project's `test.md` memory contains a **command template** — the exact co
 - Create and present test plan before executing
 - Investigate failures to root cause
 - Use todo list for progress visibility
-- When running tests that share a database with other projects, set `MONGODB_DATABASE` to a unique test database name — shared databases mean destructive test operations (`deleteMany`, etc.) will destroy real data without isolation (read the project's `/memories/projects/<key>/test.md` for the template command and test scripts)
+- When running tests that share a database with other projects, set `MONGODB_DATABASE` to a unique test database name — shared databases mean destructive test operations (`deleteMany`, etc.) will destroy real data without isolation (read the project's `$AGENTS_ROOT/memories/projects/<key>/test.md` for the template command and test scripts)
 
 **NEVER:**
 - Edit, create, or delete source files

@@ -5,7 +5,7 @@ user-invokable: false
 ---
 # Memory Access
 
-Global agent memory files live at `~/.agents/memories/` — **outside** the VS Code workspace. This skill provides prompt-free access to them.
+Global agent memory files live at `$AGENTS_ROOT/memories/` — **outside** the VS Code workspace. This skill provides prompt-free access to them.
 
 ## When to Use
 
@@ -37,13 +37,13 @@ Both reads and writes use scripts via `run_in_terminal`. This keeps memory opera
 ### Reading
 
 ```
-~/.agents/skills/memory-access/scripts/read-memory.sh <memory-name>
+$AGENTS_ROOT/skills/memory-access/scripts/read-memory.sh <memory-name>
 ```
 
 **Examples:**
 ```
-~/.agents/skills/memory-access/scripts/read-memory.sh pr-dashboard
-~/.agents/skills/memory-access/scripts/read-memory.sh session/current-task
+$AGENTS_ROOT/skills/memory-access/scripts/read-memory.sh pr-dashboard
+$AGENTS_ROOT/skills/memory-access/scripts/read-memory.sh session/current-task
 ```
 
 ### Writing
@@ -51,12 +51,12 @@ Both reads and writes use scripts via `run_in_terminal`. This keeps memory opera
 Pass the memory name and content as two arguments. This performs **atomic full-file replacement** — the entire file is overwritten, not patched.
 
 ```
-~/.agents/skills/memory-access/scripts/write-memory.sh <memory-name> '<content>'
+$AGENTS_ROOT/skills/memory-access/scripts/write-memory.sh <memory-name> '<content>'
 ```
 
 **Examples:**
 ```
-~/.agents/skills/memory-access/scripts/write-memory.sh pr-dashboard '# PR Dashboard Context
+$AGENTS_ROOT/skills/memory-access/scripts/write-memory.sh pr-dashboard '# PR Dashboard Context
 - **GitHub username:** octocat
 - **GitHub org:** my-org'
 ```
@@ -74,7 +74,7 @@ Pass the memory name and content as two arguments. This performs **atomic full-f
 
 ## Project Memory Structure
 
-Project-specific operational knowledge lives under `/memories/projects/<key>/` in domain-scoped files:
+Project-specific operational knowledge lives under `$AGENTS_ROOT/memories/projects/<key>/` in domain-scoped files:
 
 ```
 memories/projects/<key>/
@@ -92,8 +92,8 @@ Reads a memory file and outputs its contents.
 
 **Usage:**
 ```
-~/.agents/skills/memory-access/scripts/read-memory.sh <memory-name>
-~/.agents/skills/memory-access/scripts/read-memory.sh --help
+$AGENTS_ROOT/skills/memory-access/scripts/read-memory.sh <memory-name>
+$AGENTS_ROOT/skills/memory-access/scripts/read-memory.sh --help
 ```
 
 **Arguments:**
@@ -110,8 +110,8 @@ Writes content to a memory file, replacing it entirely. Creates the file and par
 
 **Usage:**
 ```
-~/.agents/skills/memory-access/scripts/write-memory.sh <memory-name> '<content>'
-~/.agents/skills/memory-access/scripts/write-memory.sh --help
+$AGENTS_ROOT/skills/memory-access/scripts/write-memory.sh <memory-name> '<content>'
+$AGENTS_ROOT/skills/memory-access/scripts/write-memory.sh --help
 ```
 
 **Arguments:**

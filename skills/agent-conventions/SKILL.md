@@ -10,7 +10,7 @@ user-invokable: false
 - Deciding agent vs. subagent architecture
 
 ## File Locations
-- **Agents:** `~/.agents/agents/[AgentName].agent.md` (PascalCase)
+- **Agents:** `$AGENTS_ROOT/agents/[AgentName].agent.md` (PascalCase)
 
 ---
 

@@ -16,7 +16,7 @@ description: 'Fetch all open PRs for a GitHub user, classify by action needed vs
 
 Before fetching, you need enough context about the user and their team to classify PRs accurately.
 
-**Cached context:** Check user memory (`/memories/pr-dashboard.md`) for previously saved answers. If found, use them and proceed — only re-ask if something looks stale or the user requests changes. If not found, ask the questions below, then save the answers to `/memories/pr-dashboard.md` for future runs.
+**Cached context:** Check user memory (`$AGENTS_ROOT/memories/pr-dashboard.md`) for previously saved answers. If found, use them and proceed — only re-ask if something looks stale or the user requests changes. If not found, ask the questions below, then save the answers to `$AGENTS_ROOT/memories/pr-dashboard.md` for future runs.
 
 **Key questions** (ask together, not one at a time):
 1. What is your GitHub username?

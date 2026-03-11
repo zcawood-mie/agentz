@@ -12,11 +12,11 @@ description: 'Reset a project to a clean state on the default branch. Use for: r
 
 **NOTE:** This skill resets a repository to its default branch. It's typically used on the main clone (not active worktrees or feature branches). For active development, follow the `worktree-management` skill.
 
-Read project paths from the `project-registry` skill's index (`/memories/project-index.md`).
+Read project paths from the `project-registry` skill's index (`$AGENTS_ROOT/memories/project-index.md`).
 
 ## Project Lookup
 
-Refer to the project's setup file (`/memories/projects/<project>/setup.md`) for dev stash requirements, build artifacts, and other configuration. Default branches and submodule status come from the index.
+Refer to the project's setup file (`$AGENTS_ROOT/memories/projects/<project>/setup.md`) for dev stash requirements, build artifacts, and other configuration. Default branches and submodule status come from the index.
 
 ## Reset Workflow
 

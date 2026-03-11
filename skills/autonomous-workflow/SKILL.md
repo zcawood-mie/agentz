@@ -40,8 +40,8 @@ Follow the `planning` skill methodology:
 ### Phase 4: Worktree Creation
 Follow the `worktree-management` skill to create a worktree for active development.
 
-1. Read workspace paths from the `project-registry` skill (`/memories/project-index.md`)
-2. Read project setup config from `/memories/projects/<key>/setup.md`
+1. Read workspace paths from the `project-registry` skill (`$AGENTS_ROOT/memories/project-index.md`)
+2. Read project setup config from `$AGENTS_ROOT/memories/projects/<key>/setup.md`
 3. Follow the `worktree-management` skill's "Creating a Worktree" steps (or use `create-worktree.sh`)
 4. Branch naming: `feature/<ticket-id>-<short-description>`
    - For GitHub issues: `feature/issue-<number>-<short-description>`

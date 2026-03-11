@@ -9,8 +9,8 @@ Review the latest GitHub Copilot AI model landscape and update agent and prompt 
 ## Steps
 
 1. **Gather current state**
-   - Read all agent files in `~/.agents/agents/` and note their current `model:` property
-   - Read all prompt files in `~/.agents/prompts/` and note any `model:` overrides
+   - Read all agent files in `$AGENTS_ROOT/agents/` and note their current `model:` property
+   - Read all prompt files in `$AGENTS_ROOT/prompts/` and note any `model:` overrides
    - Follow the `model-selection` skill for the current model knowledge base
 
 2. **Check for updates**

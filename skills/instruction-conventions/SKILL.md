@@ -10,7 +10,7 @@ user-invokable: false
 - Editing or reviewing an existing instruction
 
 ## File Location
-`~/.agents/instructions/<name>.instructions.md`
+`$AGENTS_ROOT/instructions/<name>.instructions.md`
 - File: lowercase-hyphenated
 
 ## Template

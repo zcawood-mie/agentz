@@ -134,7 +134,7 @@ When evaluating whether to change model assignments:
 2. **Check multiplier changes:** Fetch `https://docs.github.com/en/copilot/concepts/billing/copilot-requests` for current multiplier table
 3. **Match agent to task tier:** Map each agent's typical workload to the task categories above
 4. **Optimize for the bottleneck:** If rate limits are the issue, shift support agents down. If quality is the issue, shift up.
-5. **Update agent `model:` properties** in `~/.agents/agents/`
+5. **Update agent `model:` properties** in `$AGENTS_ROOT/agents/`
 
 ## Rules
 

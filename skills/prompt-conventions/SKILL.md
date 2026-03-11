@@ -10,7 +10,7 @@ user-invokable: false
 - Editing or reviewing an existing prompt
 
 ## File Location
-`~/.agents/prompts/<promptName>.prompt.md`
+`$AGENTS_ROOT/prompts/<promptName>.prompt.md`
 - File: camelCase
 
 ## Template

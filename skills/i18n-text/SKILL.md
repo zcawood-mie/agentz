@@ -24,7 +24,7 @@ This applies to:
 
 The i18n system, syntax, and language files are project-specific. Read the cached config from memory:
 ```bash
-~/.agents/skills/memory-access/scripts/read-memory.sh i18n-config
+$AGENTS_ROOT/skills/memory-access/scripts/read-memory.sh i18n-config
 ```
 
 If the memory file does not exist, ask the user the following questions (together, not one at a time), then save the answers using `write-memory.sh`:

@@ -11,8 +11,8 @@ user-invokable: false
 - Choosing between hooks, instructions, and skills for enforcement
 
 ## File Locations
-- **Config:** `~/.agents/hooks/global.json` — defines which scripts run at which lifecycle events
-- **Scripts:** `~/.agents/hooks/scripts/<name>.sh` — the actual shell scripts that execute
+- **Config:** `$AGENTS_ROOT/hooks/global.json` — defines which scripts run at which lifecycle events
+- **Scripts:** `$AGENTS_ROOT/hooks/scripts/<name>.sh` — the actual shell scripts that execute
 
 ## Config Template
 
@@ -22,14 +22,14 @@ user-invokable: false
     "PreToolUse": [
       {
         "type": "command",
-        "command": "~/.agents/hooks/scripts/script-name.sh",
+        "command": "$AGENTS_ROOT/hooks/scripts/script-name.sh",
         "timeout": 5
       }
     ],
     "PostToolUse": [
       {
         "type": "command",
-        "command": "~/.agents/hooks/scripts/other-script.sh",
+        "command": "$AGENTS_ROOT/hooks/scripts/other-script.sh",
         "timeout": 30
       }
     ]
@@ -75,7 +75,7 @@ user-invokable: false
 
 | Script | Event | Purpose |
 |---|---|---|
-| `block-hooks-edit.sh` | PreToolUse | Require approval for edits to `~/.agents/hooks/` |
+| `block-hooks-edit.sh` | PreToolUse | Require approval for edits to `$AGENTS_ROOT/hooks/` |
 | `block-force-push.sh` | PreToolUse | Block `git push --force` (require `--force-with-lease`) |
 | `scan-before-push.sh` | PreToolUse | Scan diff for secrets/debug artifacts before `git push` |
 | `sandbox-git.sh` | PreToolUse | Auto-approve safe git ops, block dangerous ones (reset --hard, branch deletion, remote manipulation) |
@@ -84,5 +84,5 @@ user-invokable: false
 
 ## Security Notes
 - Hook scripts execute with the same permissions as VS Code
-- Agents are prompted for approval before editing `~/.agents/hooks/` (enforced by `block-hooks-edit.sh` with `permissionDecision: "ask"`)
+- Agents are prompted for approval before editing `$AGENTS_ROOT/hooks/` (enforced by `block-hooks-edit.sh` with `permissionDecision: "ask"`)
 - Review hook scripts manually — never let agents create or modify them without explicit approval

@@ -14,7 +14,7 @@ description: 'Implementation execution cycle and discipline. Use for: implement,
 
 **Ensure you're on a feature branch, not the default branch.** If the project uses worktrees, make sure you're in the worktree directory — see the `worktree-management` skill.
 
-Read project paths from the `project-registry` skill's index (`/memories/project-index.md`).
+Read project paths from the `project-registry` skill's index (`$AGENTS_ROOT/memories/project-index.md`).
 
 ## Change Discipline
 
