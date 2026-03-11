@@ -46,3 +46,4 @@ applyTo: '**'
 | `no-terminal-edits` | `**` | Never use terminal commands to create/modify files |
 | `parallel-execution` | `**` | Parallelize independent work |
 | `response-formatting` | `**` | Output structure, diagrams, tables, file references |
+| `skill-first` | `**` | Load relevant skills before starting any task |
