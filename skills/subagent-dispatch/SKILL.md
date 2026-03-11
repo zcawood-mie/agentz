@@ -20,11 +20,11 @@ user-invokable: false
 Every subagent prompt must include:
 
 1. **Exact operation** — what to do, stated as a specific action
-   - Good: "Fetch PR #142 from bluehive-health/employer including the diff and all review comments"
+   - Good: "Fetch PR #142 from my-org/my-repo including the diff and all review comments"
    - Bad: "Look at the PR we've been discussing"
 
 2. **All necessary identifiers** — repo, branch, PR number, issue number, URLs, file paths
-   - Good: "Create a PR from feature/auth-flow to main in bluehive-health/employer"
+   - Good: "Create a PR from feature/auth-flow to main in my-org/my-repo"
    - Bad: "Create a PR for my current branch"
 
 3. **What to return** — specify the shape of the response you need
