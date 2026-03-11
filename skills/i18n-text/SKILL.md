@@ -72,9 +72,9 @@ When adding user-facing text:
 
 ### 1. Check for Existing Keys
 
-Before creating a new key, search the project's language files for an existing key that matches. Use the language file location from the cached i18n config.
+Before creating a new key, search **all** language files for an existing key that matches. Open each language file listed in the cached i18n config and search for the key or a substring of it.
 
-Reuse existing keys whenever the meaning matches exactly.
+Reuse existing keys whenever the meaning matches exactly. Verify the key exists in **every** language file — if it's missing from any, add it.
 
 ### 2. Add to ALL Language Files
 
@@ -84,6 +84,7 @@ New keys must be added to **every** language file listed in the cached i18n conf
 - All other language files get the **properly translated** value for that language
 - Keys are sorted **alphabetically** within each file
 - Maintain valid JSON — watch for trailing commas
+- After adding, verify the key appears in every language file
 
 ### 3. Use the Key in Code
 
@@ -118,44 +119,3 @@ Every new key requires entries in **all** language files listed in the cached i1
 ### Never Redefine Existing Keys
 
 If a key already exists, reuse it. Don't create duplicates like `save_button` when `save` already exists with the same meaning.
-
----
-
-## Available Scripts
-
-### check-i18n-key.py
-Check if a key exists across all 9 language files.
-
-```bash
-# Substring search
-python3 scripts/check-i18n-key.py save_changes
-
-# Exact match
-python3 scripts/check-i18n-key.py save_changes --exact
-
-# Human-readable output
-python3 scripts/check-i18n-key.py save_changes --format text
-```
-
-**Exit codes:** 0 = found in all files, 1 = missing from some, 2 = not found anywhere
-
-### add-i18n-key.py
-Add a key to all language files atomically, maintaining alphabetical sort.
-
-```bash
-# Add with English value (other languages get English as fallback)
-python3 scripts/add-i18n-key.py --key "save_changes" --en "Save Changes"
-
-# Add with multiple translations
-python3 scripts/add-i18n-key.py --key "hello" --en "Hello" --es "Hola" --fr "Bonjour"
-
-# Preview without writing
-python3 scripts/add-i18n-key.py --key "save" --en "Save" --dry-run
-
-# Overwrite existing key
-python3 scripts/add-i18n-key.py --key "save" --en "Save" --force
-```
-
-**Exit codes:** 0 = added, 1 = key already exists, 2 = error
-
-**Note:** Languages without a provided translation receive the English value and are flagged in the `needs_translation` output field.
