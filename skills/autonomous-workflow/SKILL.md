@@ -43,18 +43,18 @@ Follow the `worktree-management` skill to create a worktree for active developme
 1. Identify the target project and its master repo path from the `project-registry` skill
 2. Sync the master repo:
    ```bash
-   cd ~/bhDev/masterRepos/<repo>
+   cd <master-repos>/<repo>
    git fetch origin && git pull
    ```
 3. Create a worktree with the feature branch:
    ```bash
    BRANCH="feature/issue-<number>-<short-description>"
    DIR_NAME="<repo>--$(echo "$BRANCH" | tr '/' '-')"
-   git worktree add ~/bhDev/worktrees/"$DIR_NAME" -b "$BRANCH" origin/<default-branch>
+   git worktree add <worktrees>/"$DIR_NAME" -b "$BRANCH" origin/<default-branch>
    ```
 4. Switch into the worktree for all subsequent work:
    ```bash
-   cd ~/bhDev/worktrees/"$DIR_NAME"
+   cd <worktrees>/"$DIR_NAME"
    ```
 5. Branch naming: `feature/<ticket-id>-<short-description>`
    - For GitHub issues: `feature/issue-<number>-<short-description>`

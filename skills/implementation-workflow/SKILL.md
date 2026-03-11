@@ -12,7 +12,9 @@ description: 'Implementation execution cycle and discipline. Use for: implement,
 
 ## Workspace Location
 
-**All active development happens in worktrees** (`~/bhDev/worktrees/<repo>--<branch>/`), never in master repos (`~/bhDev/masterRepos/`). If you're in a master repo, stop and follow the `worktree-management` skill to create or switch to a worktree first.
+**All active development happens in worktrees** (`<worktrees>/<repo>--<branch>/`), never in master repos (`<master-repos>/`). If you're in a master repo, stop and follow the `worktree-management` skill to create or switch to a worktree first.
+
+Resolve `<worktrees>` and `<master-repos>` from the `project-registry` skill's cached memory.
 
 ## Change Discipline
 
@@ -64,11 +66,13 @@ Before writing any code:
 1. Mark todo as in-progress
 2. Make code changes
 3. Mark todo as completed
-4. Verify changes compile/run
+4. Verify changes compile/run — load `project-registry` to get the correct test/build command for the project before running anything
 
 ### Phase 4: Test and Debug (Autonomous)
 
 Follow the `testing-workflow` skill if doing structured testing.
+
+**For API/backend projects:** Load `project-registry` to find the project-specific test command. Never construct test commands manually from `package.json` — the registry script may handle database isolation, env setup, or other concerns.
 
 For quick verification:
 1. Use Chrome DevTools to visually inspect

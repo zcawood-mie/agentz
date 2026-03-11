@@ -22,7 +22,7 @@ description: 'Manual testing methodology and reporting. Use for: test, QA, manua
 3. Identify key behaviors, edge cases, and failure modes
 
 ### If no input (test current branch):
-1. Run `git diff $(git merge-base HEAD master)..HEAD --stat` for changed files
+1. Run `git diff $(git merge-base HEAD master 2>/dev/null || git merge-base HEAD main)..HEAD --stat` for changed files
 2. Run the full diff to understand actual changes
 3. Design tests around those changes
 
@@ -139,10 +139,10 @@ Do NOT fix code during testing. Report only.
 - Create and present test plan before executing
 - Investigate failures to root cause
 - Use todo list for progress visibility
-- When running bluehive-api tests, set `MONGODB_DATABASE` to a unique test database name — all projects share one local database, and tests will destroy real data without isolation (see `project-registry` skill for the template command and `run-api-test.sh` script)
+- When running tests that share a database with other projects, set `MONGODB_DATABASE` to a unique test database name — shared databases mean destructive test operations (`deleteMany`, etc.) will destroy real data without isolation (see `project-registry` skill for the template command and test scripts)
 
 **NEVER:**
 - Edit, create, or delete source files
 - Skip recording a test result
 - Assume something works without verifying
-- Run bluehive-api tests without `MONGODB_DATABASE` set to a test-specific name
+- Run tests against a shared database without `MONGODB_DATABASE` set to a test-specific name

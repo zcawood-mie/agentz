@@ -13,21 +13,19 @@ user-invokable: false
 
 ## Workspace Layout
 
-Refer to the `project-registry` skill for the full project table (default branches, submodules, install commands, build artifacts, dev config, and per-project setup details).
+Refer to the `project-registry` skill for the full project table and workspace paths. Read the cached config from memory:
+```bash
+~/.agents/skills/memory-access/scripts/read-memory.sh project-registry
+```
+
+The memory file defines `<workspace-root>`, `<master-repos>`, and `<worktrees>` paths. The standard layout:
 
 ```
-~/bhDev/
+<workspace-root>/
   masterRepos/          # Reference copies on default branch
-    bluehive/
-    bluehive-ai/
-    bluehive-api/
-    bluehive-employer/
-    bluehive-opsdesk/
-    bluehive-provider/
-    bluehive-ui/
-    waggleline/
+    <project>/          # One per project listed in the registry
   worktrees/            # Active development — one worktree per branch
-    <repo>--<branch>/   # e.g. bluehive-api--feature-issue-42-add-endpoint
+    <repo>--<branch>/   # e.g. my-api--feature-issue-42-add-endpoint
 ```
 
 ### Master Repos (`masterRepos/`)
@@ -40,7 +38,7 @@ Refer to the `project-registry` skill for the full project table (default branch
 ### Worktrees (`worktrees/`)
 - One directory per active branch
 - Naming convention: `<repo-name>--<branch-name>`
-  - Branch slashes become hyphens in the directory name: `feature/issue-42-add-endpoint` → `bluehive-api--feature-issue-42-add-endpoint`
+  - Branch slashes become hyphens in the directory name: `feature/issue-42-add-endpoint` → `my-api--feature-issue-42-add-endpoint`
 - All active development happens here
 - Delete the worktree directory when the branch is merged
 
@@ -49,7 +47,7 @@ Refer to the `project-registry` skill for the full project table (default branch
 ### Step 1: Ensure master repo is up to date
 
 ```bash
-cd ~/bhDev/masterRepos/<repo>
+cd <master-repos>/<repo>
 git fetch origin
 git pull
 ```
@@ -61,7 +59,7 @@ git pull
 BRANCH="feature/issue-42-add-endpoint"
 DIR_NAME="<repo>--$(echo "$BRANCH" | tr '/' '-')"
 
-git worktree add ~/bhDev/worktrees/"$DIR_NAME" -b "$BRANCH" origin/<default-branch>
+git worktree add <worktrees>/"$DIR_NAME" -b "$BRANCH" origin/<default-branch>
 ```
 
 This creates a new branch tracking the default branch and checks it out in the worktree directory.
@@ -73,7 +71,7 @@ This creates a new branch tracking the default branch and checks it out in the w
 **Important:** Initialize submodules **one at a time**, not with a blanket `git submodule update --init --recursive`. The parallel clones can overwhelm SSH connections and cause timeouts. The master repo's `.git/modules/` already has cached clones, so individual updates are instant (no network needed).
 
 ```bash
-cd ~/bhDev/worktrees/"$DIR_NAME"
+cd <worktrees>/"$DIR_NAME"
 
 # List all submodules from .gitmodules
 git submodule init
@@ -100,7 +98,7 @@ Refer to the `project-registry` skill for per-project setup details. Projects th
 ### Step 5: Switch to the worktree
 
 ```bash
-cd ~/bhDev/worktrees/"$DIR_NAME"
+cd <worktrees>/"$DIR_NAME"
 ```
 
 **All subsequent work happens in this directory.**
@@ -115,20 +113,20 @@ Run the project's install command from the `project-registry` skill:
 ## Listing Worktrees
 
 ```bash
-cd ~/bhDev/masterRepos/<repo>
+cd <master-repos>/<repo>
 git worktree list
 ```
 
 Or simply:
 ```bash
-ls ~/bhDev/worktrees/ | grep "^<repo>--"
+ls <worktrees>/ | grep "^<repo>--"
 ```
 
 ## Removing a Worktree (After Branch Is Merged)
 
 ```bash
-cd ~/bhDev/masterRepos/<repo>
-git worktree remove ~/bhDev/worktrees/<repo>--<branch-dir>
+cd <master-repos>/<repo>
+git worktree remove <worktrees>/<repo>--<branch-dir>
 # Optionally delete the branch if fully merged:
 git branch -d <branch-name>
 ```
@@ -136,7 +134,7 @@ git branch -d <branch-name>
 ## Syncing a Worktree with Upstream
 
 ```bash
-cd ~/bhDev/worktrees/<repo>--<branch-dir>
+cd <worktrees>/<repo>--<branch-dir>
 git pull --rebase origin <default-branch>
 ```
 
@@ -145,8 +143,8 @@ Follow the `git-sync` skill for conflict resolution and post-sync verification.
 ## Determining Where You Are
 
 When starting any task, check whether you're in:
-1. **A worktree** (`~/bhDev/worktrees/...`) → Good, proceed with development
-2. **A master repo** (`~/bhDev/masterRepos/...`) → **Stop.** Create or switch to a worktree first.
+1. **A worktree** (`<worktrees>/...`) → Good, proceed with development
+2. **A master repo** (`<master-repos>/...`) → **Stop.** Create or switch to a worktree first.
 
 To check programmatically:
 ```bash
@@ -195,17 +193,17 @@ Same as above — `git worktree add` creates the directories from the tree but d
 Automates the full 6-step worktree creation process: fetch, branch, submodules, build_info, config copy, and dependency install. Embeds the project registry.
 
 ```bash
-# Create a worktree for bluehive-employer
-bash scripts/create-worktree.sh bluehive-employer feature/issue-42-fix
+# Create a worktree for a project
+bash scripts/create-worktree.sh my-employer feature/issue-42-fix
 
 # Branch from a specific base
-bash scripts/create-worktree.sh bluehive-api feature/new-endpoint --base main
+bash scripts/create-worktree.sh my-api feature/new-endpoint --base main
 
 # Skip dependency installation
-bash scripts/create-worktree.sh bluehive feature/big-change --no-install
+bash scripts/create-worktree.sh my-app feature/big-change --no-install
 
 # Preview what would happen
-bash scripts/create-worktree.sh bluehive-employer fix/typo --dry-run
+bash scripts/create-worktree.sh my-employer fix/typo --dry-run
 ```
 
 **Exit codes:** 0 = success, 1 = creation error, 2 = invalid arguments

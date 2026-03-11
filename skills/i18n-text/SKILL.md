@@ -22,64 +22,49 @@ This applies to:
 
 ## How It Works
 
-The project uses `universe:i18n` via the `bluehive-i18n` package.
-
-### In Blaze Templates (HTML)
-
-Use the `{{_ 'key_name'}}` helper:
-
-```html
-<h2>{{_ 'available_services'}}</h2>
-<button class="btn btn-primary">{{_ 'save'}}</button>
-<input placeholder="{{_ 'search_by_name'}}" />
-<p class="empty-state-title">{{_ 'no_results_found'}}</p>
+The i18n system, syntax, and language files are project-specific. Read the cached config from memory:
+```bash
+~/.agents/skills/memory-access/scripts/read-memory.sh i18n-config
 ```
 
-With interpolation:
+If the memory file does not exist, ask the user the following questions (together, not one at a time), then save the answers using `write-memory.sh`:
 
-```html
-<p>{{_ 'your_card_will_be_charged' total=formattedTotal}}</p>
-```
+1. What i18n package/library does your project use? (e.g., `universe:i18n`, `react-intl`, `next-intl`)
+2. How are translation keys used in templates/JSX? (provide syntax example)
+3. How are translation keys used in JavaScript/TypeScript? (provide syntax example)
+4. What is the interpolation syntax? (e.g., `{$var}`, `{var}`, `{{var}}`)
+5. Where are the language files located? (e.g., `packages/my-i18n/i18n/`)
+6. What language files exist and what languages do they cover?
+7. What is the key naming convention? (e.g., `snake_case`, `camelCase`, `dot.separated`)
+
+Use the cached config for all template/JS syntax examples, language file locations, and key naming conventions below.
+
+### In Templates
+
+Use the template syntax from the cached i18n config. Example patterns:
+- Simple key: `{{_ 'key_name'}}` or `<FormattedMessage id="key_name" />`
+- With interpolation: follows the project's interpolation syntax
 
 ### In JavaScript
 
-Import and use `i18n.__()`:
-
-```js
-import { i18n } from 'meteor/universe:i18n';
-
-// Simple key
-BlueHive.functions.createToast(i18n.__('order_sent'), i18n.__('success'), 'success');
-
-// With interpolation
-i18n.__('you_do_not_have_the_correct_permissions_role_to_perform_this_action', { role: 'employer-admin' });
-
-// In Meteor errors
-throw new Meteor.Error(i18n.__('permission_not_granted'), i18n.__('access_denied'));
-```
+Use the JS import/call pattern from the cached i18n config.
 
 ## Key Naming Convention
 
-- Use `snake_case`
+Follow the key naming convention from the cached i18n config. General guidelines:
 - Be descriptive — the key should convey meaning
-- Keep keys lowercase
+- Keep keys consistent with the project's existing style
 - Use the English text as a guide for the key name
 
-| English Text | Key |
+| English Text | Example Key |
 |---|---|
 | "Save Changes" | `save_changes` |
 | "No results found" | `no_results_found` |
 | "Are you sure you want to delete this?" | `are_you_sure_you_want_to_delete_this` |
-| "Order #{id} sent" | `order_n_sent` (with `{$id}` interpolation) |
 
 ## Interpolation Syntax
 
-Use `{$variableName}` inside translation values:
-
-```json
-"your_email_n_has_not_been_verified": "Your email <strong>{$email}</strong> has not been verified.",
-"account_linked_successfully": "{$service} account linked successfully!"
-```
+Use the interpolation syntax defined in the cached i18n config.
 
 ## Required Workflow
 
@@ -87,38 +72,22 @@ When adding user-facing text:
 
 ### 1. Check for Existing Keys
 
-Before creating a new key, search `en.i18n.json` for an existing key that matches:
-
-```bash
-grep -i "search term" packages/bluehive-i18n/i18n/en.i18n.json
-```
+Before creating a new key, search the project's language files for an existing key that matches. Use the language file location from the cached i18n config.
 
 Reuse existing keys whenever the meaning matches exactly.
 
 ### 2. Add to ALL Language Files
 
-New keys must be added to every language file in `packages/bluehive-i18n/i18n/`:
+New keys must be added to **every** language file listed in the cached i18n config.
 
-| File | Language |
-|---|---|
-| `en.i18n.json` | English |
-| `ar.i18n.json` | Arabic |
-| `de.i18n.json` | German |
-| `es.i18n.json` | Spanish |
-| `fr.i18n.json` | French |
-| `ru.i18n.json` | Russian |
-| `tl.i18n.json` | Tagalog |
-| `vi.i18n.json` | Vietnamese |
-| `zh.i18n.json` | Chinese (Simplified) |
-
-- `en.i18n.json` gets the English value
+- The primary language file gets the source value
 - All other language files get the **properly translated** value for that language
-- Keys in each file are sorted **alphabetically**
+- Keys are sorted **alphabetically** within each file
 - Maintain valid JSON — watch for trailing commas
 
 ### 3. Use the Key in Code
 
-Use `{{_ 'key_name'}}` in templates or `i18n.__('key_name')` in JavaScript.
+Use the template and JS syntax from the cached i18n config.
 
 ## Anti-Patterns
 
@@ -128,37 +97,27 @@ Use `{{_ 'key_name'}}` in templates or `i18n.__('key_name')` in JavaScript.
 <!-- BAD: Hardcoded string -->
 <button>Save Changes</button>
 <h2>No results found</h2>
-<p>Are you sure?</p>
 
-<!-- GOOD: i18n key -->
-<button>{{_ 'save_changes'}}</button>
-<h2>{{_ 'no_results_found'}}</h2>
-<p>{{_ 'are_you_sure'}}</p>
+<!-- GOOD: Use your project's i18n helper -->
+<button>{{translate 'save_changes'}}</button>
+<h2>{{translate 'no_results_found'}}</h2>
 ```
 
 ```js
 // BAD: Hardcoded string in JS
-BlueHive.functions.createToast('Order sent successfully', 'Success', 'success');
+showToast('Order sent successfully', 'Success');
 
-// GOOD: i18n key
-BlueHive.functions.createToast(i18n.__('order_sent_successfully'), i18n.__('success'), 'success');
+// GOOD: Use the i18n function
+showToast(t('order_sent_successfully'), t('success'));
 ```
 
-```js
-// BAD: Mixing hardcoded and i18n
-throw new Meteor.Error('Permission denied', i18n.__('access_denied'));
+### Never Add Keys to Only One Language
 
-// GOOD: Both use i18n
-throw new Meteor.Error(i18n.__('permission_denied'), i18n.__('access_denied'));
-```
-
-### Never Add Keys to Only English
-
-Every new key requires entries in **all 9 language files**. If you're unsure of a translation, add your best translation and note it in `packages/bluehive-i18n/i18n/needs-translated.txt`.
+Every new key requires entries in **all** language files listed in the cached i18n config.
 
 ### Never Redefine Existing Keys
 
-If a key already exists in `en.i18n.json`, reuse it. Don't create duplicates like `save_button` when `save` already exists with the same meaning.
+If a key already exists, reuse it. Don't create duplicates like `save_button` when `save` already exists with the same meaning.
 
 ---
 

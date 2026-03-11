@@ -10,7 +10,9 @@ description: 'Reset a project to a clean state on the default branch. Use for: r
 - Preparing a master repo for research or reference
 - Verifying the master repo is clean before creating a worktree
 
-**NOTE:** This skill applies to master repos only (`~/bhDev/masterRepos/`). Master repos stay on their default branch at all times. For active development, follow the `worktree-management` skill to create a worktree in `~/bhDev/worktrees/`.
+**NOTE:** This skill applies to master repos only (`<master-repos>/`). Master repos stay on their default branch at all times. For active development, follow the `worktree-management` skill to create a worktree in `<worktrees>/`.
+
+Resolve `<master-repos>` and `<worktrees>` from the `project-registry` skill's cached memory.
 
 ## Project Lookup
 
@@ -107,8 +109,8 @@ git status
 
 Report a summary:
 ```
-✓ Project: bluehive-employer
-✓ Branch: master
+✓ Project: <project-name>
+✓ Branch: <default-branch>
 ✓ Fetched and pulled latest
 ✓ Submodules updated
 ✓ Developer stash applied
