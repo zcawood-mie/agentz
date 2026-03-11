@@ -178,14 +178,15 @@ This means a fresh clone works immediately. The first time you invoke a workflow
 - Your projects, workspace layout, build commands, and test configurations
 - Your GitHub identity, org, and team review pipeline
 - Your i18n system, language files, and template syntax
-- Any stable, personal information that skills need but shouldn't hardcode
+- Project-specific scripts, setup steps, and operational knowledge that's specific to your environment
+- Any stable information that skills need but shouldn't be in the public repo
 
 **What does NOT belong in memory:**
 - Domain knowledge, methodology, or rules — that's skill content
 - Volatile state like current branch names or PR lists
 - Secrets or tokens
 
-Skills that use memory: `project-registry`, `pr-dashboard`, `i18n-text`, `worktree-management`, and `project-reset` (the latter two read from `project-registry`'s cache). See the `skill-conventions` skill for how to add memory-backed config to a new skill.
+See the `skill-conventions` skill for how to add memory-backed config to a new skill.
 
 **File format:** `memories/topic-name.md` (gitignored, managed by agents via the `memory-access` skill)
 
