@@ -75,10 +75,9 @@ Follow the `pr-review` skill priorities:
 
 ### Phase 8: Push & Draft PR
 1. Push to origin: `git push -u origin HEAD`
-2. Delegate to GitHubOps subagent to create a **draft** PR with:
-   - Title matching the ticket title (prefixed with conventional type)
-   - Body including: what changed, why, testing done, ticket link
-   - The ticket/issue linked via `Closes #<number>` or `Fixes #<number>`
+2. Delegate to GitHubOps subagent to create a **draft** PR:
+   - Title: conventional-commit prefix + ticket title
+   - Body: follow the `pr-workflow` skill's PR Body Format
 
 ### Phase 9: Copilot Review & Address Feedback
 1. Delegate to GitHubOps subagent to request Copilot's review on the draft PR

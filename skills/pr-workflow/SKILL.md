@@ -39,17 +39,27 @@ This skill works with both local and remote content:
 Relates to owner/repo#[issue_number]
 
 ## Summary
-[1-3 sentence description of what this PR does and why]
+[1-2 sentences describing the goal/purpose — why this change exists, not what files changed]
 ```
 
 **Rules:**
 - **Related PRs goes FIRST** — it's referenced repeatedly during review and merge
+- The Related PRs list includes the PR itself — every related PR has an identical list
 - Always search for related issues across the **entire organization**
 - Use `Relates to` — NEVER `Closes`, `Fixes`, `Resolves` (they auto-close)
 - Omit Related Issues section if no issue found
 - Omit Related PRs section if only one PR
-- Every PR in a group lists ALL sibling PRs
-- **NEVER list changed files** (no "New files", "Modified files", "Changed files" sections) — GitHub's Files tab already shows this, and file lists go stale as the PR evolves
+- **NEVER list changed files** — GitHub's Files tab already shows this
+
+### Multi-Repo PRs
+
+When a feature spans multiple repos, create all PRs first, then backfill Related PRs:
+
+1. **Create each PR** with Summary and Related Issues filled in, Related PRs empty
+2. **Collect all PR numbers** from the created PRs
+3. **Update every PR body** to add the full Related PRs list (including itself)
+
+After backfill, every PR in the group should have an identical Related PRs section.
 
 ---
 
